@@ -17,7 +17,7 @@ import MyDiary from '../pages/my-diary/index';
 export default function MyDiaryRoute() {
     return (
         <NavigationContainer independent={true}>
-            <Stack.Navigator >
+            <Stack.Navigator headerMode="none">
             {/* tabBarOptions={{ tabStyle: {display: 'none'} }}> */}
                 <Stack.Screen name="Meu Diário" component={MyDiary}/>
                 <Stack.Screen name="MedicineSettings" component={MedicineSettings}/>
