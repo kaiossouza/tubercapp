@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import { Card } from 'react-native-elements';
-import { StyleSheet, Text, Dimensions, View, Animated } from 'react-native';
+// import { Card, Avatar } from 'react-native-elements';
+import { StyleSheet, Text, Dimensions, View, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import IconFeather from 'react-native-vector-icons/Feather';
 import CardInfo from '../../components/card-info';
 import CardDay from '../../components/card-day';
+import {
+    useFonts,
+    Cabin_400Regular
+  } from '@expo-google-fonts/cabin';
+import { AppLoading } from 'expo';
+import { Agenda } from 'react-native-calendars';
+import {Card, Avatar} from 'react-native-paper';
 
 IconFeather.loadFont();
 
@@ -12,33 +19,88 @@ const days = [{day: 1, dayName: 'Seg'}, {day: 2, dayName: 'Ter'},{day: 3, dayNam
 const content = [{key: 'feel'},{key: 'medicines'},{key: 'sympthons'}]
 const {width} = Dimensions.get("window");
 
-const DiaryResume = ({navigation}) => {
-    return (
-        <View style={styles.content}>
-            <Card containerStyle={styles.month}>
-                <View style={styles.monthContent}>
-                    <Text style={styles.monthName}> Agosto </Text> 
-                    <IconFeather style={styles.monthIcon} size={20}  name="calendar"/>    
-                </View>
-            </Card>
-            <FlatList style={styles.cards} horizontal showsHorizontalScrollIndicator={false}
-                    data={days} 
-                    renderItem = {({ item }) => {
-                            return( 
-                                <CardDay itemDay={item.day} itemName={item.dayName}/>
-                            )
-                    } }
-            />
-            <FlatList
-            style={{ maxHeight: 340,  top: 147}}
-            data={content} 
-            renderItem = {({ item }) => { 
-                return(
-                    <CardInfo />
-                ) }}
-            />
-        </View>
-    );
+const timeToString = (time: any) => {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
+};  
+
+const DiaryResume = () => {
+    let [fontsLoaded] = useFonts({
+        Cabin_400Regular,
+    });
+
+    const [items, setItems] = useState({});
+
+    const loadItems = (day: any) => {
+      setTimeout(() => {
+        for (let i = -15; i < 85; i++) {
+          const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+          const strTime = timeToString(time);
+          if (!items[strTime]) {
+            items[strTime] = [];
+            const numItems = Math.floor(Math.random() * 3 + 1);
+            for (let j = 0; j < numItems; j++) {
+              items[strTime].push({
+                name: 'Item for ' + strTime + ' #' + j,
+                height: Math.max(50, Math.floor(Math.random() * 150)),
+              });
+            }
+          }
+        }
+        const newItems = {};
+        Object.keys(items).forEach((key) => {
+          newItems[key] = items[key];
+        });
+        setItems(newItems);
+      }, 1000);
+    };
+    const renderItem = (item) => {
+        return (
+            <TouchableOpacity style={{marginRight: 10, marginTop: 17}}>
+                <CardInfo />
+            </TouchableOpacity>
+        );
+    };
+
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            // <View style={styles.content}>
+            //     <Card containerStyle={styles.month}>
+            //         <View style={styles.monthContent}>
+            //             <Text style={styles.monthName}> Agosto </Text> 
+            //             <IconFeather style={styles.monthIcon} size={20}  name="calendar"/>    
+            //         </View>
+            //     </Card>
+            //     <FlatList style={styles.cards} horizontal showsHorizontalScrollIndicator={false}
+            //             data={days} 
+            //             renderItem = {({ item }) => {
+            //                     return( 
+            //                         <CardDay itemDay={item.day} itemName={item.dayName}/>
+            //                     )
+            //             } }
+            //     />
+            //     <FlatList
+            //     style={{ maxHeight: 340,  top: 147}}
+            //     data={content} 
+            //     renderItem = {({ item }) => { 
+            //         return(
+            //             <CardInfo />
+            //         ) }}
+            //     />
+            // </View>
+
+            <View style={{flex: 1}}>
+                <Agenda
+                items={items}
+                loadItemsForMonth={loadItems}
+                selected={Date.now()}
+                renderItem={renderItem}
+                />
+            </View>
+        );
+    }
 }
 
 export default DiaryResume;
@@ -60,7 +122,7 @@ const styles = StyleSheet.create({
     },
     day:{
         alignSelf: 'center',
-        fontFamily: 'Arial',
+        fontFamily: 'Cabin_400Regular',
         width: 30,
         textAlign: 'center',
         fontSize: 20,

@@ -5,17 +5,29 @@ import Medicine from '../pages/my-diary/medicine';
 import Symptoms from '../pages/my-diary/symptoms';
 import DiaryResume from '../pages/my-diary/resume';
 import Icon from 'react-native-vector-icons/Fontisto';
+import {
+    useFonts,
+    Cabin_400Regular
+  } from '@expo-google-fonts/cabin';
+import { AppLoading } from 'expo';
 Icon.loadFont();
 
 const {width, height} = Dimensions.get("window");
 
 const Slide = ({index, navigation}) => {
+    let [fontsLoaded] = useFonts({
+        Cabin_400Regular,
+    });
     const slide = index === 0 ? < Feel /> : (index === 1 ? <Medicine navigation={navigation} /> : (index === 2 ? <Symptoms/> : <DiaryResume/> ));
-    return ( 
-        <View style={styles.slide}>
-             { slide }
-        </View>     
-    );
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return ( 
+            <View style={styles.slide}>
+                { slide }
+            </View>     
+        );
+    }
 };
 
 const styles = StyleSheet.create({
@@ -49,7 +61,7 @@ const styles = StyleSheet.create({
         fontSize:15,
         marginLeft: 60,
         marginTop: 40,
-        fontFamily: 'Arial',
+        fontFamily: 'Cabin_400Regular',
         fontStyle: 'normal',
         marginBottom: 20,
     },

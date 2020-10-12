@@ -1,20 +1,25 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import { Text, View, StyleSheet, Animated } from 'react-native';
-import { Button, Avatar, Appbar, Divider } from 'react-native-paper';
-import { Svg, Path } from 'react-native-svg';
+import { Divider } from 'react-native-paper';
 import { moderateScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Fontisto';
 import IconFeather from 'react-native-vector-icons/Feather';
-import { CheckBox } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Card } from 'react-native-elements';
+import { Card, Avatar } from 'react-native-elements';
 import RadioButton from '../../components/radioButton';
 import FabButton from '../../components/fabButton';
-
+import {
+    useFonts,
+    Cabin_400Regular
+  } from '@expo-google-fonts/cabin';
+import { AppLoading } from 'expo';
 Icon.loadFont();
 IconFeather.loadFont();
+const pillsImage = './../../../assets/pills.png';
 
-export default function Medicine({navigation}){
+export default function Medicine(){
+    let [fontsLoaded] = useFonts({
+        Cabin_400Regular,
+    });
     var listCheckResult: any[] = [];
     
     var medicines = [{
@@ -42,37 +47,46 @@ export default function Medicine({navigation}){
     medicines.map((medicine, index) => (
         listCheckResult.push( { state: useState(false) })
     ));
-
-    return (
-        <Card containerStyle={styles.card}>
-            <Animated.ScrollView
-             decelerationRate="fast"
-             bounces={false}
-             scrollToOverflowEnabled={true}
-             scrollEventThrottle={1}>
-            <View style={styles.medicineTitleContent}>
-              <Text style={styles.titleMedicine}>
-                  Medicamentos
-              </Text>
-              <FabButton 
-                  style={{ fontSize: 5, left: 75, top: 5}} 
-              />
-            </View>
-            <Divider style={styles.divider}/>
-                {
-                    medicines.map((medicine, index) => {
-                        let result = () => {listCheckResult[index].state[0] ? listCheckResult[index].state[1](false) : listCheckResult[index].state[1](true)};
-                        return(
-                            <View style={styles.option}>
-                                <RadioButton checked={listCheckResult[index].state[0]} onPress={result}/>
-                                <Text style={styles.optionName}>{medicine.name}</Text>
-                            </View>
-                        )
-                    })
-                }
-            </Animated.ScrollView>
-        </Card>
-    );
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            <Card containerStyle={styles.card}>
+                <Animated.ScrollView
+                decelerationRate="fast"
+                bounces={false}
+                scrollToOverflowEnabled={true}
+                scrollEventThrottle={1}>
+                <View style={styles.medicineTitleContent}>
+                <Text style={styles.titleMedicine}>
+                    Medicamentos
+                </Text>
+                <FabButton 
+                    style={{ fontSize: 5, left: 75, top: 5}} 
+                />
+                </View>
+                <Divider style={styles.divider}/>
+                    {
+                        medicines.map((medicine, index) => {
+                            let result = () => {listCheckResult[index].state[0] ? listCheckResult[index].state[1](false) : listCheckResult[index].state[1](true)};
+                            return(
+                                <View style={styles.option}>
+                                    <RadioButton checked={listCheckResult[index].state[0]} onPress={result}/>
+                                    <View style={styles.medicineInfo}>
+                                        <Text style={styles.optionName}>{medicine.name}</Text>
+                                        <Text style={styles.optionDescription}>X mg, y pílulas</Text>
+                                    </View>
+                                    <View style={styles.image}>
+                                        <Avatar size="small" activeOpacity={0.7} source={require(pillsImage)} />
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
+                </Animated.ScrollView>
+            </Card>
+        );
+    }
 };
 
 const styles = StyleSheet.create({
@@ -193,7 +207,7 @@ const styles = StyleSheet.create({
         fontSize: 15, 
         fontWeight: 'bold', 
         fontStyle: 'normal', 
-        fontFamily: 'Arial'
+        fontFamily: 'Cabin_400Regular'
      },
 
 
@@ -215,10 +229,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     optionName:{
-        fontFamily: 'Arial',
+        fontFamily: 'Cabin_400Regular',
         fontStyle: 'normal',
-        fontSize: 20,
-        marginLeft: 20
+        fontSize: 19,
     },
     medicineTitleContent:{
         flexDirection:'row', 
@@ -226,5 +239,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    medicineInfo:{
+        flex: 1,
+        paddingLeft: 20,
+    },
+    optionDescription:{
+        color: '#7d8597'
+    },
+    image:{
+        flex: 0.3,
+        alignItems: 'center'
+    },
 });
