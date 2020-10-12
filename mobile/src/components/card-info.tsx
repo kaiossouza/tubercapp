@@ -15,7 +15,7 @@ const CardInfo = ({}) => {
         <View style={styles.card}>
             <View style={styles.content}>
                 <View style={styles.image}>
-                    <Avatar size="medium" activeOpacity={0.7} source={require(pillsImage)} />
+                    <Avatar size="medium" activeOpacity={0.7} source={require('../../assets/pills.png')} />
                 </View>
                 <View style={styles.cardContent}>
                     <Text style={styles.title}>Nome do Medicamento</Text>

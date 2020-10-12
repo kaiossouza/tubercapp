@@ -22,8 +22,8 @@ routes.get('/', async (req, res) => {
 routes.post('/sessions', SessionController.store);
 routes.post('/login', SessionController.login);
 
-// routes.get('/spots', SpotController.index);
-// routes.post('/spots', upload.single('thumbnail'), SpotController.store);
+//routes.get('/spots', SpotController.index);
+routes.post('/sessions', upload.single('picture'), SessionController.store);
 
 // routes.get('/dashboard', DashboardController.show);
 

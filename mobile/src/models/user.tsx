@@ -7,7 +7,7 @@ export interface User {
     canSendNews: Boolean,
     canNotify: Boolean,
     password: String,
-    picture: String,
+    picture: any,
     treatmentStart: Date,
     treatmentDuration: Number
 }

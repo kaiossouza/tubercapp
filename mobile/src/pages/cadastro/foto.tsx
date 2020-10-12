@@ -8,10 +8,14 @@ import RegisterContext from '../../contexts/register';
 import { User } from '../../models/user';
 import { Button } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
+import api from '../../services/api';
+import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
+import AuthContext from '../../contexts/auth';
 
 export default function Foto({ navigation }) {
-    const { user, saveUser } = useContext(RegisterContext);
-    const [ image, setImage ] = useState<string | null>(null);
+    const { user } = useContext(RegisterContext);
+    const { handleLogin } = useContext(AuthContext);
+    const [ image, setImage ] = useState<any | null>(null);
 
     function componentDidMount() {
         getPermissionAsync();
@@ -34,23 +38,23 @@ export default function Foto({ navigation }) {
             aspect: [4, 3],
             quality: 1,
           });
+
           if (!result.cancelled) {
             setImage(result.uri);
           }
-    
-          console.log(result);
         } catch (E) {
           console.log(E);
         }
     };
 
-    function registerUser() {
-        saveUser({
-            ...user,
-            picture: image
-        } as User);
-
-
+    async function registerUser() {
+        const data = new FormData();
+    
+        data.append('picture', image);
+        data.append('user', JSON.stringify(user));
+    
+        let result = await api.post('/sessions', data);
+        handleLogin(result.data.email, result.data.senha);
     }
     
     return (
@@ -61,7 +65,7 @@ export default function Foto({ navigation }) {
                 { image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require('../../../assets/logo.png')} style={styles.image} /> }   
                 <Button mode="contained" onPress={_pickImage} style={styles.button} labelStyle={styles.textButton}>Escolher foto</Button>              
             </KeyboardAvoidingView>   
-            <TouchableOpacity  onPress={registerUser}  style={styles.footer}>                    
+            <TouchableOpacity  onPress={registerUser}  style={styles.picFooter}>                    
                 <Text style={styles.footerText}>Finalizar</Text>
                 <AntDesign name="rightcircle" size={20} color="#82B1B6"></AntDesign>
             </TouchableOpacity>         

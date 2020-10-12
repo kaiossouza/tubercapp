@@ -1,20 +1,20 @@
 import React, {useState, useContext} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
-import {User} from '../../services/api';
 import AuthContext from '../../contexts/auth';
 import { NavigationContainer } from '@react-navigation/native';
+import { login } from '../../services/api';
 
 export default function Login({ navigation }) {
   const { signed, user, handleLogin } = useContext(AuthContext);  
-
-  console.log(signed);
-  console.log(user);
-
   const [ credentials, setCredentials ] = useState({
     email: "",
     senha: ""
-  } as User);
+  });
+
+  const login = () => {
+    handleLogin(credentials.email, credentials.senha);
+  }
 
   const handleEmailChange = (value: string) => {
     setCredentials(prevState => ({
@@ -41,7 +41,7 @@ export default function Login({ navigation }) {
         onChangeText={handlePasswordChange} 
         style={styles.inputView} 
         secureTextEntry={true}></TextInput>
-      <Button mode="contained" onPress={handleLogin} style={styles.button} labelStyle={styles.textButton}>Entrar</Button>
+      <Button mode="contained" onPress={login} style={styles.button} labelStyle={styles.textButton}>Entrar</Button>
       <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }}>
           <Text style={styles.touchableText}>Não tem uma conta?</Text>
       </TouchableOpacity>

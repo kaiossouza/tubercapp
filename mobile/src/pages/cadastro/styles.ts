@@ -83,6 +83,14 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
 
+    picFooter:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        paddingTop: 40,
+        paddingEnd:40,
+        backgroundColor: '#fff'
+    },
+
     inputText:{
         height:50,
         color:"white"

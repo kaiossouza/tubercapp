@@ -4,9 +4,9 @@ import AppRoutes from './app.routes';
 import AuthRoutes from './auth.routes';
 
 const Routes: React.FC = () => {
-    const { signed } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-    return signed ? <AppRoutes /> : <AuthRoutes />;
+    return !!user ? <AppRoutes /> : <AuthRoutes />;
 }
 
 export default Routes;
