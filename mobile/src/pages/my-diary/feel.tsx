@@ -1,20 +1,23 @@
 
-import React, {Component, useState} from 'react';
-import { Text, View, StyleSheet, CheckBox, Dimensions, TouchableWithoutFeedback } from 'react-native';
-import { Button, Appbar, Divider } from 'react-native-paper';
-import { Svg, Path } from 'react-native-svg';
-import { moderateScale } from 'react-native-size-matters';
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Fontisto';
 import IconFeather from 'react-native-vector-icons/Feather';
-import { ScrollView } from 'react-native-gesture-handler';
-import Animated, { divide } from 'react-native-reanimated';
-import Dot from '../../components/dots';
-import { Card, Avatar } from 'react-native-elements';
+import { Card } from 'react-native-elements';
+import {
+    useFonts,
+    Cabin_400Regular
+  } from '@expo-google-fonts/cabin';
+import { AppLoading } from 'expo';
 
 Icon.loadFont();
 IconFeather.loadFont();
 
 export default function Feel({navigation}){
+    let [fontsLoaded] = useFonts({
+        Cabin_400Regular,
+    });
     const [option1, setOption1] = useState(false);
     const [option2, setOption2] = useState(false);
     const [option3, setOption3] = useState(false);
@@ -58,49 +61,51 @@ export default function Feel({navigation}){
             setOption3(true)
         }
     };
-    
-    return (
-    <Card containerStyle={styles.card}>
-        <Text style={styles.titleFeel}>
-            Como você está?
-        </Text>
-        <Divider style={styles.divider}/>
-        <View style={styles.options}>
-            <TouchableWithoutFeedback onPress={result1}>
-                <View style={styles.option}>
-                    { 
-                        option1 ? <Icon color="#DB9E06" size={35} name="slightly-smile" />  : 
-                        <Icon color="black" size={35} name="slightly-smile" /> 
-                    } 
-                    <Text style={styles.optionName}>
-                        Estou bem!
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={result2}>
-                <View style={styles.option}>
-                    { 
-                        option2 ? <Icon color="#DB9E06" size={35} name="neutral" />  : 
-                                  <Icon color="black" size={35} name="neutral" />
-                    }
-                    <Text style={styles.optionName}>
-                        Mais ou menos!
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={result3}>
-                <View  style={styles.option}>
-                    { 
-                        option3 ? <Icon color="#DB9E06" size={35} name="frowning" />  : 
-                                  <Icon color="black" size={35} name="frowning" />
-                    }
-                    <Text style={styles.optionName}>
-                        Não me sinto bem!
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        </View>
-    </Card>
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else
+        return (
+            <Card containerStyle={styles.card}>
+            <Text style={styles.titleFeel}>
+                Como você está?
+            </Text>
+            <Divider style={styles.divider}/>
+            <View style={styles.options}>
+                <TouchableWithoutFeedback onPress={result1}>
+                    <View style={styles.option}>
+                        { 
+                            option1 ? <Icon color="#DB9E06" size={35} name="slightly-smile" />  : 
+                            <Icon color="black" size={35} name="slightly-smile" /> 
+                        } 
+                        <Text style={styles.optionName}>
+                            Estou bem!
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={result2}>
+                    <View style={styles.option}>
+                        { 
+                            option2 ? <Icon color="#DB9E06" size={35} name="neutral" />  : 
+                                    <Icon color="black" size={35} name="neutral" />
+                        }
+                        <Text style={styles.optionName}>
+                            Mais ou menos!
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={result3}>
+                    <View  style={styles.option}>
+                        { 
+                            option3 ? <Icon color="#DB9E06" size={35} name="frowning" />  : 
+                                    <Icon color="black" size={35} name="frowning" />
+                        }
+                        <Text style={styles.optionName}>
+                            Não me sinto bem!
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        </Card>
     );
 };
 
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     },
 
     optionName:{
-        fontFamily: 'Arial',
+        fontFamily: 'Cabin_400Regular',
         fontStyle: 'normal',
         fontSize: 20,
         marginLeft: 10
