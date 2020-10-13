@@ -26,7 +26,7 @@ export default function Data({ navigation } : { navigation: any }) {
     
     return (
         <View style={styles.mainContainer}>
-            <Header pageNumber={2} totalPages={7}  navigation={navigation}></Header>
+            <Header pageNumber={2} totalPages={9}  navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.container}>            
                 <Text style={styles.labelText}>Qual a sua data de nascimento?</Text>
                 <DateTimePicker testID="dateTimePicker"

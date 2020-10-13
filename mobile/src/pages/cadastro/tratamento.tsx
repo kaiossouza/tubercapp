@@ -27,7 +27,7 @@ export default function Tratamento({ navigation }) {
     
     return (
         <View style={styles.mainContainer}>
-            <Header  pageNumber={6} totalPages={7}  navigation={navigation}></Header>
+            <Header  pageNumber={6} totalPages={9}  navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.container}>    
                 <Text style={styles.labelText}>Quando seu tratamento inicia/iniciou?</Text>
                 <DateTimePicker testID="dateTimePicker"

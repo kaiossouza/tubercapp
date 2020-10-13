@@ -12,6 +12,7 @@ import Tratamento from './tratamento';
 import Duracao from './duracao';
 import Genero from './genero';
 import Foto from './foto';
+import Padrinho from './padrinho';
 
 const CadastroStack = createStackNavigator();
 
@@ -26,6 +27,7 @@ const Cadastro: React.FC = () => {
                 <CadastroStack.Screen name="Senha" component={Senha} />
                 <CadastroStack.Screen name="Tratamento" component={Tratamento} />
                 <CadastroStack.Screen name="Duracao" component={Duracao} />
+                <CadastroStack.Screen name="Padrinho" component={Padrinho} />
                 <CadastroStack.Screen name="Foto" component={Foto} />
             </CadastroStack.Navigator>
         </RegisterProvider>

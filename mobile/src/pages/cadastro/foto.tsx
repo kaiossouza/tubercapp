@@ -59,7 +59,7 @@ export default function Foto({ navigation }) {
     
     return (
         <View style={styles.mainContainer}>
-            <Header navigation={navigation}></Header>
+            <Header pageNumber={9} totalPages={9} navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.picContainer}>
                 <Text style={styles.labelText}>Quase lá! Escolha uma foto de perfil:</Text>
                 { image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require('../../../assets/logo.png')} style={styles.image} /> }   

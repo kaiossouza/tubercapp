@@ -19,7 +19,7 @@ export default function Nome({ navigation }) {
 
     return (
         <View style={styles.mainContainer}>
-            <Header pageNumber={1} totalPages={7} navigation={navigation}></Header>
+            <Header pageNumber={1} totalPages={9} navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.container}>            
                 <Text style={styles.labelText}>Qual seu nome?</Text>
                 <TextInput style={styles.inputView} onChangeText={handleInput}></TextInput>  

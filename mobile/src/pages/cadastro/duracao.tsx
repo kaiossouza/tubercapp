@@ -20,11 +20,11 @@ export default function Duracao({ navigation }) {
     
     return (
         <View style={styles.mainContainer}>
-            <Header  pageNumber={7} totalPages={7}  navigation={navigation}></Header>
+            <Header  pageNumber={7} totalPages={9}  navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.container}>    
-                <Text style={styles.labelText}>Qual a duração prevista do seu tratamento?</Text>
+                <Text style={styles.labelText}>Qual a duração prevista do seu tratamento (em dias)?</Text>
                 <TextInput keyboardType="number-pad" style={styles.inputView} onChangeText={handleDurationInput}></TextInput>                    
-                <Footer navigation={navigation} goTo="Foto"></Footer>              
+                <Footer navigation={navigation} goTo="Padrinho"></Footer>              
             </KeyboardAvoidingView>            
         </View>
     );

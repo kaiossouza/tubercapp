@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, Linking } from 'react-native';
 import { createDrawerNavigator,  DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +17,8 @@ import MyDiaryTabs from './mydiary.routes';
 import Settings from '../pages/settings/index';
 import MedicineSetting from '../pages/my-diary/medicine-setting';
 import tubercAssets from '../../assets/assets';
+import News from '../pages/news';
+import AuthContext from '../contexts/auth';
 
 IconFontisto.loadFont();
 IconFoundation.loadFont();
@@ -27,6 +29,7 @@ const Stack = createStackNavigator();
 const assets = new tubercAssets('../../assets/');
 
 function CustomDrawerContent({ props } : { props: any }) {
+    const { handleLogout } = useContext(AuthContext);
     return (
       <DrawerContentScrollView {...props} style={{flex: 1}}>
          {/* <DrawerItemList {...props} />  */}
@@ -37,9 +40,9 @@ function CustomDrawerContent({ props } : { props: any }) {
         <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={20}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => props.navigation.navigate("Home")}/>
         <DrawerItem icon={() => (<IconFontisto name="heart-alt" size={20}/>)} labelStyle={{fontSize: 20}} label="Exames" onPress={() => props.navigation.navigate("Home")}/>
         <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Minha Clínica" onPress={() => props.navigation.navigate("Home")}/>
-        <DrawerItem icon={() => (<IconFontisto name="phone" size={20}/>)} style={{borderBottomWidth: 2, borderBottomColor: "#e9ecef"}} labelStyle={{fontSize: 20}} label="Ligue SUS" onPress={() => props.navigation.navigate("Home")}/>
+        <DrawerItem icon={() => (<IconFontisto name="phone" size={20}/>)} style={{borderBottomWidth: 2, borderBottomColor: "#e9ecef"}} labelStyle={{fontSize: 20}} label="Ligue SUS" onPress={() => Linking.openURL(`tel:${136}`)}/>
         <DrawerItem icon={() => (<IconFontisto name="spinner-cog" size={15}/>)} labelStyle={{fontSize: 15}} label="Configurações" onPress={() => props.navigation.navigate("Settings")}/>
-        <DrawerItem icon={() => (<IconFontisto name="close" size={15}/>)} labelStyle={{fontSize: 15}} label="Sair" onPress={() => props.navigation.navigate("Login")}/>
+        <DrawerItem icon={() => (<IconFontisto name="close" size={15}/>)} labelStyle={{fontSize: 15}} label="Sair" onPress={handleLogout}/>
         <DrawerItem
           label="TUBERC by Fio Cruz"
           onPress={() => props.navigation.toggleDrawer()}
@@ -74,6 +77,7 @@ function MyTabs(props) {
                   inactiveTintColor: '#fff', style: {backgroundColor: '#82B1B6'}, indicatorStyle: { backgroundColor: '#fff'}}}>
               <Tab.Screen name="Início" options={{ tabBarIcon: () => ( <IconFoundation name="home" color='#fff' size={25}/> )}} component={Home}/>
               <Tab.Screen name="Padrinho" options={{ tabBarIcon: () => ( <IconFontisto name="person" color='#fff' size={20}/> )}} component={Godfather} />
+              <Tab.Screen name="News" options={{ tabBarIcon: () => ( <IconFontisto name="world" color='#fff' size={20}/> )}} component={News} />
               <Tab.Screen name="Meu Diário" options={{ tabBarIcon: () => ( <IconFontisto name="prescription" color='#fff' size={20}/> )}} component={MyDiaryRoute}/>
           </Tab.Navigator>
         </NavigationContainer>

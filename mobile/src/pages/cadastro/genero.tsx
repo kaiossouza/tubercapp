@@ -22,7 +22,7 @@ export default function Genero({ navigation }) {
     
     return (
         <View style={styles.mainContainer}>
-            <Header  pageNumber={3} totalPages={7}  navigation={navigation}></Header>
+            <Header  pageNumber={3} totalPages={9}  navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.container}>            
                 <Text style={styles.labelText}>Com qual gênero você se identifica?</Text> 
 

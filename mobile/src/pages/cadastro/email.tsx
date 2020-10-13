@@ -19,7 +19,7 @@ export default function Email({ navigation }) {
 
     return (
         <View style={styles.mainContainer}>
-            <Header  pageNumber={4} totalPages={7}  navigation={navigation}></Header>
+            <Header  pageNumber={4} totalPages={9}  navigation={navigation}></Header>
             <KeyboardAvoidingView style={styles.container}>            
                 <Text style={styles.labelText}>Qual seu e-mail?</Text>
                 <TextInput autoCompleteType="email" keyboardType="email-address" textContentType="emailAddress" style={styles.inputView} onChangeText={handleInput}></TextInput>  
