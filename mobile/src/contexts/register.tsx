@@ -13,7 +13,6 @@ export const RegisterProvider: React.FC = ({children}) => {
     
     const saveUser = (_user: User) => {
         setUser(_user);
-        console.log(user);
     }
 
     return (

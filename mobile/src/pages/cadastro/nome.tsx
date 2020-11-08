@@ -7,7 +7,7 @@ import Footer from './footer';
 import RegisterContext from '../../contexts/register';
 import { User } from '../../models/user';
 
-export default function Nome({ navigation }) {
+export default function Nome({ navigation }: {navigation: any}) {
     const { user, saveUser } = useContext(RegisterContext);
     const image = "./../../../assets/images/cadastro/bem-vindo.png";
     function handleInput(value: string) {

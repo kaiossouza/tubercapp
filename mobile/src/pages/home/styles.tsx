@@ -7,10 +7,13 @@ export const styles = StyleSheet.create({
     },
     appName:{
       alignSelf:'center',
-      marginTop: 10,
-      paddingTop: 15,
+      marginTop: 5,
+      paddingLeft: 20,
+      paddingRight: 20,
       fontSize: 25,
-      color: '#fff'
+      color: '#fff',
+      justifyContent: "center",
+      textAlign: "center"
     },
     downArrow:{
       tintColor: '#fff',
@@ -151,5 +154,11 @@ export const styles = StyleSheet.create({
         width: 350,
         justifyContent: 'center',
         alignSelf: 'center',
+    },
+    infoUser: {
+      flexDirection: 'column', 
+      marginTop: 5, 
+      justifyContent: "center", 
+      alignItems: "center"
     }
 });

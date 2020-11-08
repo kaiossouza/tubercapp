@@ -1,13 +1,13 @@
 export interface User {
-    name: String,
+    name: string,
     nasc: Date,
-    email: String,
-    gender: Number,
-    role: Number,
-    canSendNews: Boolean,
-    canNotify: Boolean,
-    password: String,
+    email: string,
+    gender: number,
+    role: number,
+    canSendNews: boolean,
+    canNotify: boolean,
+    password: string,
     picture: any,
     treatmentStart: Date,
-    treatmentDuration: Number
+    treatmentDuration: number
 }

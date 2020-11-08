@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Text, View, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
@@ -10,11 +10,11 @@ import { Divider } from 'react-native-paper';
 import tubercAssets from '../../../assets/assets';
 import { styles } from './styles';
 import { LinearGradient } from 'expo-linear-gradient';
-import { string } from 'react-native-redash';
+import AuthContext from './../../contexts/auth';
+import moment from 'moment';
 
 IconEntypo.loadFont();
 IconEvilIcons.loadFont();
-
 Icon.loadFont();
 IconFontisto.loadFont();
 
@@ -28,17 +28,23 @@ const symptonsImage = assets.symptonsImage;
 const tuberculose = assets.tuberculose;
 
 export default function Home({navigation} : { navigation: any }){
+    const { user } = useContext(AuthContext);
+    const firstNameTrim = user ? user.name.substring(0, user.name.indexOf(" ")) : null;
+    const firstUserName = user ? (firstNameTrim ? firstNameTrim : user.name) : "";
+    const now = moment(new Date());
+    const duration = moment.duration(now.diff(user?.treatmentStart));
+    const treatmentDuration: number = user?.treatmentDuration ? user?.treatmentDuration : 0;
+    const percentDuration = parseInt(duration.asDays().toString()) / treatmentDuration;
+
     return (
         <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
-            <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
-              <View style={{position: 'absolute', right: 70}}>
-                <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('../../../assets/yuri.jpg')}/>
-              </View>
-              <Text style={styles.appName}>Yuri</Text>
+            <View style={styles.infoUser}>
+              <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('../../../assets/yuri.jpg')}/>
+              <Text style={styles.appName}>{firstUserName}</Text>
             </View>
             <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/>
             <View>
-              <Progress done="70"/>
+              <Progress done={percentDuration * 100}/>
             </View>
 
             <View style={styles.cards}>
