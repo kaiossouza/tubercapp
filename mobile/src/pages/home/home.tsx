@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
+import { Text, View, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import { Avatar } from 'react-native-elements';
@@ -9,6 +8,9 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Divider } from 'react-native-paper';
 import tubercAssets from '../../../assets/assets';
+import { styles } from './styles';
+import { LinearGradient } from 'expo-linear-gradient';
+import { string } from 'react-native-redash';
 
 IconEntypo.loadFont();
 IconEvilIcons.loadFont();
@@ -25,7 +27,7 @@ const medicineImage = assets.medicineImage;
 const symptonsImage = assets.symptonsImage;
 const tuberculose = assets.tuberculose;
 
-export default function Home({navigation}){
+export default function Home({navigation} : { navigation: any }){
     return (
         <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
             <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
@@ -36,7 +38,7 @@ export default function Home({navigation}){
             </View>
             <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/>
             <View>
-              <ProgressBar progress={0.5} color={'#fff'} style={styles.progressBar}></ProgressBar>
+              <Progress done="70"/>
             </View>
 
             <View style={styles.cards}>
@@ -108,156 +110,39 @@ export default function Home({navigation}){
     );
 };
 
-const styles = StyleSheet.create({
-    avatar:{
-        alignSelf: 'center',
-        marginTop: 10
-    },
-    progressBar:{
-      flex: 1,
-      marginTop: 15,
-      marginHorizontal: 20,
-      width: '70%',
-      height: 15,
-      alignSelf:'center',
-      borderRadius: 5,
-    },
-    appName:{
-      alignSelf:'center',
-      marginTop: 10,
-      paddingTop: 15,
-      fontSize: 25,
-      color: '#fff'
-    },
-    downArrow:{
-      tintColor: '#fff',
-      width: 15,
-      height: 15,
-      alignSelf: 'center',
-      marginTop: 10,
-      marginBottom: 5
-    },
-    cards:{
-      marginVertical: 20
-    },
 
-    card:{
-      margin: 10,
-      height: 110,
-      backgroundColor: '#fff',
+const Progress = ({done} : {done: any}) => {
+	const [style, setStyle] = React.useState({});
+	
+	setTimeout(() => {
+		const newStyle = {
+			opacity: 1,
+      width: `${done}%`,
+      height: 30,
       borderRadius: 20,
-      width: 350,
-      alignSelf: 'center',
-    },
-    content:{
-        flexDirection: 'row',
-        flex: 2,
-    },
-    contentDiary:{
-      flexDirection: 'row',
-      flex: 2,
-      alignContent: 'center',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      marginLeft: 30
-    },
-    image:{
-        flex: 0.3,
-        alignItems: 'center',
-        paddingTop: 15,
-        paddingLeft: 10
-    },
-    imageNews:{
-      flex: 0.3,
-      alignItems: 'center',
-      paddingTop: 15,
-      paddingLeft: 20
-    },
-    imagesDiary:{
-      flexDirection: 'row',
-    },
-    cardContent:{
-        flex: 1,
-        paddingLeft: 20,
-        paddingTop: 15
-    },
-    cardContentMedicine:{
-      flex: 1,
-      paddingLeft: 20,
-      paddingTop: 15
-    },
-    cardContentDiary:{
-      flex: 1,
-      paddingLeft: 20,
-      paddingTop: 20
-    },
-    menu:{
-        flex: 0.2,
-        alignItems: 'center',
-        paddingTop: 17,
-    },
-    title:{
-        color: 'black',
-        fontSize: 15,
-        paddingBottom: 3
-    },
-    titleNews:{
-      color: '#666666',
-      fontSize: 14,
-    },
-    description: {
-        color: '#7d8597',
-        paddingBottom: 2
-    },
-    descriptionDiary: {
-      color: '#7d8597',
-      paddingBottom: 2,
-      fontSize: 12
-    },
-    descriptionNews: {
-      color: '#7d8597',
-      left: 150,
-    },
-    divider:{
-        height: 3,
-        width: '80%',
-        alignSelf: 'center',
-        marginTop: 5,
-        opacity: 0.5
-    },
-    footer:{
-        flexDirection: 'row',
-        flex: 1,
-        width: 350,
-        alignSelf: 'center',
-        alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center'
-    },
-    schedule: {
-        color: '#7d8597',
-        alignSelf: 'center',
-        paddingRight: 170
-    },
-    scheduleMedicine:{
-      color: '#7d8597',
-        alignSelf: 'center',
-        paddingRight: 80,
-        fontSize: 13
-    },
-    status: {
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-    },
-    statusMedicine:{
-      flexDirection: 'row',
-      width: 40,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-    }
-});
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+		}
+		
+		setStyle(newStyle);
+	}, 200);
+	
+	return (
+		<View style={styles.progress}>
+        <LinearGradient
+        colors={['#47A8B2', '#69afb8']}
+        style={style}
+        >
+        <Text
+          style={{
+            backgroundColor: 'transparent',
+            fontSize: 15,
+            color: '#fff',
+          }}>
+          {done}%
+        </Text>
+      </LinearGradient>
+		</View>
+	)
+}
