@@ -56,10 +56,11 @@ export default function Tratamento({ navigation }) {
                 onChange={onChange}
                 /> )}          */}
                 <DatePicker 
-                    format="DD/MM/YYYY"
+                    format="DD MMM YYYY"
                     style={styles.dateComponent}
                     date={date}
                     onDateChange={changeDate}
+                    locale={'pt-br'}
                 />
                 <Footer navigation={navigation} goTo="Duracao"></Footer>              
             </KeyboardAvoidingView>            

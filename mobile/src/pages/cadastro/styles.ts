@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
         color:'#82B1B6',
         fontSize:18,
         textAlign: 'left',
-        justifyContent: "flex-start"
+        marginBottom: 20
     }, 
 
     headerText: {

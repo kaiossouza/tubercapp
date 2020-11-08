@@ -56,10 +56,11 @@ export default function Data({ navigation } : { navigation: any }) {
                 onTouchStart={() => setShow(false)}
                 /> )} */}
                 <DatePicker 
-                    format="DD/MM/YYYY"
+                    format="DD MMM YYYY"
                     style={styles.dateComponent}
                     date={date}
                     onDateChange={changeDate}
+                    locale={'pt-br'}
                 />
                 <Footer navigation={navigation} goTo="Genero"></Footer>              
             </KeyboardAvoidingView>            
