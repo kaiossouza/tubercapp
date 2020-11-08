@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler';
-
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import { Button, DefaultTheme, Provider as PaperProvider, Text } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider, Text } from 'react-native-paper';
 import { useFonts, Roboto_400Regular, Roboto_100Thin, Roboto_500Medium, Roboto_300Light } from '@expo-google-fonts/roboto';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';

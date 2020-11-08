@@ -1,9 +1,6 @@
 import React from 'react';
-
 import {createStackNavigator} from '@react-navigation/stack';
-import Home from '../pages/home/home';
 import DrawerRoutes from './home.routes';
-import Login from '../pages/login/login';
 
 const AppStack = createStackNavigator();
 

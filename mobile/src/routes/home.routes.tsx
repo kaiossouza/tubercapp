@@ -2,21 +2,15 @@ import React, { useContext } from 'react';
 import { StyleSheet, Linking } from 'react-native';
 import { createDrawerNavigator,  DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import IconFoundation from 'react-native-vector-icons/Foundation';
 import { NavigationContainer } from '@react-navigation/native';
-import { Avatar } from 'react-native-elements';
 import { Appbar} from 'react-native-paper';
 
 import Home from '../pages/home/home';
 import Godfather from '../pages/godfather/godfather';
-import MyDiary from '../pages/my-diary/index';
 import MyDiaryRoute from './mydiary.routes';
-import MyDiaryTabs from './mydiary.routes';
 import Settings from '../pages/settings/index';
-import MedicineSetting from '../pages/my-diary/medicine-setting';
-import tubercAssets from '../../assets/assets';
 import News from '../pages/news';
 import AuthContext from '../contexts/auth';
 
@@ -25,18 +19,12 @@ IconFoundation.loadFont();
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialTopTabNavigator();
-const Stack = createStackNavigator();
-const assets = new tubercAssets('../../assets/');
 
 function CustomDrawerContent({ props } : { props: any }) {
     const { handleLogout } = useContext(AuthContext);
     return (
       <DrawerContentScrollView {...props} style={{flex: 1}}>
-         {/* <DrawerItemList {...props} />  */}
         <DrawerItem style={styles.drawerStyle} icon={() => (<IconFontisto name="close-a" size={20} color="#adb5bd"/>)} label="" onPress={() => props.navigation.closeDrawer()} />
-        {/* <DrawerItem style={{alignSelf: 'center', flex: 1, marginLeft:70, marginTop: -30}} icon={() => (
-            <Avatar size="large" rounded activeOpacity={0.7} style={styles.avatar} source={require('./../../content/images/yuri.jpg')}/>
-            )} label=""/> */}
         <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={20}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => props.navigation.navigate("Home")}/>
         <DrawerItem icon={() => (<IconFontisto name="heart-alt" size={20}/>)} labelStyle={{fontSize: 20}} label="Exames" onPress={() => props.navigation.navigate("Home")}/>
         <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Minha Clínica" onPress={() => props.navigation.navigate("Home")}/>
@@ -56,7 +44,7 @@ function CustomDrawerContent({ props } : { props: any }) {
         <NavigationContainer independent>
             <Drawer.Navigator 
                 drawerType='slide'
-                drawerContent={props => <CustomDrawerContent {...props} />}>
+                drawerContent={(props: any) => <CustomDrawerContent {...props} />}>
                     <Drawer.Screen name="Home" component={MyTabs}/>
                     <Drawer.Screen name="Settings" component={Settings} />
                     <Drawer.Screen name="Padrinho" component={Godfather}/>
@@ -65,7 +53,7 @@ function CustomDrawerContent({ props } : { props: any }) {
     );
 }
 
-function MyTabs(props) {
+function MyTabs(props: any) {
      return (
        <NavigationContainer independent={true}>
           <Appbar.Header style={{backgroundColor:"#82B1B6"}}>

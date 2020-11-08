@@ -1,10 +1,11 @@
 import React, {createContext, useState} from 'react';
 import { login } from '../services/api';
-import { User } from '../models/user';
+import LoginResponse from './../interfaces/login-response.interface';
+import { User } from './../models/user';
 
 interface AuthContextData {
     signed: boolean,
-    user: any | null,
+    user: User | null,
     handleLogin(email: string, password: string): Promise<void>,
     handleLogout(): Promise<void>
 }
@@ -12,11 +13,11 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
-    const [user, setUser] = useState<any | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     
     async function handleLogin(email: string, password: string) {
         var response = await login(email, password);
-        setUser(response);
+        setUser(response.user);
     }
 
     async function handleLogout() {
