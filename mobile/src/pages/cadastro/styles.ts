@@ -4,10 +4,9 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: 180,
       paddingLeft:40,
       paddingRight:40,
-      backgroundColor: '#fff'
+      backgroundColor: '#fff',
     },
 
     picContainer:{
@@ -32,13 +31,13 @@ export const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor: '#fff',
-        alignContent: 'center'
       },
     
     labelText: {
         color:'#82B1B6',
         fontSize:18,
         textAlign: 'left',
+        justifyContent: "flex-start"
     }, 
 
     headerText: {
@@ -123,6 +122,17 @@ export const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: "#82B1B6",
         margin:40
+    },
+    imageRegister: {
+        width: '100%',
+        height: '60%',
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignSelf: "center",
+    },
+    dateComponent: {
+        width: 350
     }
   });
   
