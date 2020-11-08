@@ -40,7 +40,7 @@ export default class tubercAssets {
         this.thinkingImage = this.baseUrl + 'thinking-image.png';
         this.thinking = this.baseUrl + 'thinking.png';
         this.tuberculose = this.baseUrl + 'tuberculose.png';
-        this.yuri = this.baseUrl + 'yuri.png';
+        this.yuri = this.baseUrl + 'yuri.jpg';
         this.pills = this.baseUrl + 'pills.png';
     }
 }

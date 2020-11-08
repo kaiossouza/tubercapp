@@ -1431,6 +1431,15 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native-datepicker@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-datepicker/-/react-native-datepicker-1.7.0.tgz#b4dc63ed3bd356ac30c9195b7987aea45f79fe8d"
+  integrity sha512-YbhwgveJSmJRsUNl82UcZbMdNDBzd+RiMmyev3+yiEepGYk56yh/Q3Ypi2dw7XjMEQ5GSNUehcVKVP31EWcUlw==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+    moment ">=2.14.0"
+
 "@types/react-native-vector-icons@^6.4.5":
   version "6.4.6"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.6.tgz#848e3b14572def56212cafbf5cb1254b445bfb41"
@@ -4416,7 +4425,7 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.22.0, moment@^2.24.0:
+moment@>=2.14.0, moment@^2.22.0, moment@^2.24.0, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==

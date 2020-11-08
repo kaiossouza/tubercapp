@@ -10,7 +10,7 @@ import { User } from '../../models/user';
 import DatePicker from 'react-native-datepicker';
 
 
-export default function Tratamento({ navigation }) {
+export default function Tratamento({ navigation } : { navigation: any }) {
     const { user, saveUser } = useContext(RegisterContext);
     const [date, setDate] = useState(new Date(1598051730000));
     const [show, setShow] = useState(true);
