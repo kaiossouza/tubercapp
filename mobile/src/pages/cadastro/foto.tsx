@@ -5,14 +5,13 @@ import { CAMERA_ROLL, askAsync } from 'expo-permissions';
 import { styles } from './styles';
 import Header from './header';
 import RegisterContext from '../../contexts/register';
-import { User } from '../../models/user';
 import { Button } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import api from '../../services/api';
 import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import AuthContext from '../../contexts/auth';
 
-export default function Foto({ navigation }) {
+export default function Foto({ navigation } : {navigation: any}) {
     const { user } = useContext(RegisterContext);
     const { handleLogin } = useContext(AuthContext);
     const [ image, setImage ] = useState<any | null>(null);

@@ -3,9 +3,8 @@ import { Text, StyleSheet, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { styles } from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
 
-export default function Header({ navigation, pageNumber = 1, totalPages = 1 }) {
+export default function Header({ navigation, pageNumber = 1, totalPages = 1 } : {navigation: any, pageNumber: number, totalPages: number}) {
     return (
         <View style={styles.headerContainer}>
             <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={styles.header}>

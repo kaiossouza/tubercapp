@@ -18,7 +18,7 @@ export default function Nome({ navigation }: {navigation: any}) {
     }
 
     return (
-        <View style={styles.mainContainer}>
+        <KeyboardAvoidingView style={styles.mainContainer}>
             <Header pageNumber={1} totalPages={9} navigation={navigation}></Header>
             <Image style={styles.imageRegister} source={require(image)} />      
             <KeyboardAvoidingView style={styles.container}>         
@@ -28,6 +28,6 @@ export default function Nome({ navigation }: {navigation: any}) {
                     <Footer navigation={navigation} goTo="Data"></Footer>        
                 </View>      
             </KeyboardAvoidingView>            
-        </View>
+        </KeyboardAvoidingView>
     );
 }

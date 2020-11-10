@@ -7,7 +7,7 @@ import RegisterContext from '../../contexts/register';
 import { User } from '../../models/user';
 import {Picker} from '@react-native-community/picker';
 
-export default function Genero({ navigation }) {
+export default function Genero({ navigation } : { navigation: any}) {
     const { user, saveUser } = useContext(RegisterContext);
     const [gender, setGender] = useState<ReactText | null>(null);
     const image = "./../../../assets/images/cadastro/dados-2.png";
@@ -20,7 +20,7 @@ export default function Genero({ navigation }) {
     }
     
     return (
-        <View style={styles.mainContainer}>
+        <KeyboardAvoidingView style={styles.mainContainer}>
             <Header  pageNumber={3} totalPages={9}  navigation={navigation}></Header>
             <Image style={styles.imageRegister} source={require(image)} />      
             <KeyboardAvoidingView style={styles.container}>            
@@ -45,6 +45,6 @@ export default function Genero({ navigation }) {
 
                 <Footer navigation={navigation} goTo="Email"></Footer>              
             </KeyboardAvoidingView>            
-        </View>
+        </KeyboardAvoidingView>
     );
 }

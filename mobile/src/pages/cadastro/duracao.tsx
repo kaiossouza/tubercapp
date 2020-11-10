@@ -1,14 +1,13 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import { View, Text, KeyboardAvoidingView, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { styles } from './styles';
 import Header from './header';
 import Footer from './footer';
 import RegisterContext from '../../contexts/register';
 import { User } from '../../models/user';
 
-export default function Duracao({ navigation }) {
+export default function Duracao({ navigation } : {navigation: any}) {
     const { user, saveUser } = useContext(RegisterContext);
     const image = "./../../../assets/images/cadastro/hospital.png";
 
@@ -20,7 +19,7 @@ export default function Duracao({ navigation }) {
     }
     
     return (
-        <View style={styles.mainContainer}>
+        <KeyboardAvoidingView style={styles.mainContainer}>
             <Header  pageNumber={7} totalPages={9}  navigation={navigation}></Header>
             <Image style={styles.imageRegister} source={require(image)} />      
             <KeyboardAvoidingView style={styles.container}>    
@@ -28,6 +27,6 @@ export default function Duracao({ navigation }) {
                 <TextInput keyboardType="number-pad" style={styles.inputView} onChangeText={handleDurationInput}></TextInput>                    
                 <Footer navigation={navigation} goTo="Padrinho"></Footer>              
             </KeyboardAvoidingView>            
-        </View>
+        </KeyboardAvoidingView>
     );
 }
