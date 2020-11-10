@@ -13,14 +13,24 @@ const userTest = {
 
 const messagesTest = [
     {
-        _id: 2,
-        text: 'Tudo sim e com você?',
+        _id: 3,
+        text: 'Valeu pelo aviso !',
         createdAt: new Date(),
         user: userTest
     },
     {
+        _id: 2,
+        text: 'Essa funcionalidade ainda está em desenvolvimento ;)',
+        createdAt: new Date(),
+        user: {
+            _id: 2,
+            name: 'Padrinho',
+            avatar: 'https://placeimg.com/140/140/any',
+        }
+    },
+    {
         _id: 1,
-        text: 'Olá, tudo bem?',
+        text: 'Olá, tudo bom? Aqui é o lugar onde você consegue se comunicar com o seu padrinho, ok?',
         createdAt: new Date(),
         user: {
             _id: 2,

@@ -1,7 +1,7 @@
 import React, {createContext, useState} from 'react';
 import { login } from '../services/api';
 import { User } from './../models/user';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Image } from 'react-native';
 
 interface AuthContextData {
     signed: boolean,
@@ -29,8 +29,10 @@ export const AuthProvider: React.FC = ({children}) => {
 
     if (loading) {
         return (
-            <View style={{alignItems: 'center', justifyContent: 'center', flex: 1,}}>
-                <ActivityIndicator size="large" color="#82B1B6" />
+            <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, backgroundColor: '#82B1B6'}}>
+                <Image
+                    style={{width: 100, height: 100, borderRadius:10}}
+                    source={{uri: 'https://media.giphy.com/media/Hb3p6zmoUgRRUKPJi5/giphy.gif'}} />
             </View>
         )
     }
