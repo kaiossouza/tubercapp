@@ -23,7 +23,7 @@ export default function Nome({ navigation }: {navigation: any}) {
             <Image style={styles.imageRegister} source={require(image)} />      
             <KeyboardAvoidingView style={styles.container}>         
                 <View>
-                    <Text style={styles.labelText}>Qual seu nome?</Text>
+                    <Text style={styles.labelText}>Qual seu nome completo?</Text>
                     <TextInput style={styles.inputView} onChangeText={handleInput}></TextInput>  
                     <Footer navigation={navigation} goTo="Data"></Footer>        
                 </View>      
