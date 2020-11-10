@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { View, Text, KeyboardAvoidingView, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { styles } from './styles';
@@ -9,13 +9,20 @@ import { User } from '../../models/user';
 
 export default function Duracao({ navigation } : {navigation: any}) {
     const { user, saveUser } = useContext(RegisterContext);
+    const [ durationIsValid, setValidDuration ] = useState(false);
     const image = "./../../../assets/images/cadastro/hospital.png";
 
     function handleDurationInput(value: string) {
+        var numberValue: number = Number(value);
+        setValidDuration(isValid(numberValue));
         saveUser({
             ...user,
-            treatmentDuration: Number(value)
+            treatmentDuration: numberValue
         } as User);
+    }
+
+    function isValid(pVal: number): boolean { 
+        return pVal >= 30 ? true : false
     }
     
     return (
@@ -25,7 +32,7 @@ export default function Duracao({ navigation } : {navigation: any}) {
             <KeyboardAvoidingView style={styles.container}>    
                 <Text style={styles.labelText}>Qual a duração prevista do seu tratamento (em dias)?</Text>
                 <TextInput keyboardType="number-pad" style={styles.inputView} onChangeText={handleDurationInput}></TextInput>                    
-                <Footer navigation={navigation} goTo="Padrinho"></Footer>              
+                { durationIsValid && <Footer navigation={navigation} goTo="Padrinho"></Footer> }          
             </KeyboardAvoidingView>            
         </KeyboardAvoidingView>
     );

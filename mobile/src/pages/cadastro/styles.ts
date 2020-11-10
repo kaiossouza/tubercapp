@@ -35,8 +35,7 @@ export const styles = StyleSheet.create({
     labelText: {
         color:'#82B1B6',
         fontSize:18,
-        textAlign: 'left',
-        marginBottom: 20
+        textAlign: 'left'
     }, 
 
     headerText: {
@@ -132,6 +131,12 @@ export const styles = StyleSheet.create({
     },
     dateComponent: {
         width: 350
+    },
+    labelInfo:{
+        color:'#82B1B6',
+        fontSize:11,
+        textAlign: 'left',
+        marginBottom: 10
     }
   });
   

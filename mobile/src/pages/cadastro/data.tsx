@@ -6,13 +6,16 @@ import Footer from './footer';
 import RegisterContext from '../../contexts/register';
 import { User } from '../../models/user';
 import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 
 export default function Data({ navigation } : { navigation: any }) {
     const { user, saveUser } = useContext(RegisterContext);
     const [date, setDate] = useState(new Date());
+    const [dataValidation, setDataValidation] = useState(false);
     const image = "./../../../assets/images/cadastro/alarme.png";
 
     function handleInput(value: Date) {
+        setDataValidation(isValid(value));
         saveUser({
             ...user,
             nasc: value
@@ -23,6 +26,13 @@ export default function Data({ navigation } : { navigation: any }) {
         setDate(date);
         handleInput(date);
     };
+
+    function isValid(pVal: Date): boolean { 
+        var dateNow = moment();
+        var date = moment(pVal);
+        var dateMax = dateNow.subtract(30, "days");
+        return date > dateMax ? false : true;
+    }
 
     return (
         <KeyboardAvoidingView style={styles.mainContainer}>
@@ -37,7 +47,7 @@ export default function Data({ navigation } : { navigation: any }) {
                     onDateChange={changeDate}
                     locale={'pt-br'}
                 />
-                <Footer navigation={navigation} goTo="Genero"></Footer>              
+                {dataValidation && <Footer navigation={navigation} goTo="Genero"></Footer>}      
             </KeyboardAvoidingView>            
         </KeyboardAvoidingView>
     );
