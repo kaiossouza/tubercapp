@@ -121,16 +121,15 @@ const Progress = ({done} : {done: any}) => {
 	const [style, setStyle] = React.useState({});
 	
 	setTimeout(() => {
-		const newStyle = {
-			opacity: 1,
-      width: `${done}%`,
-      height: 30,
-      borderRadius: 20,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-		}
-		
+        const newStyle = {
+            opacity: 1,
+            width: `${done}%`,
+            height: 30,
+            borderRadius: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+        }
 		setStyle(newStyle);
 	}, 200);
 	
