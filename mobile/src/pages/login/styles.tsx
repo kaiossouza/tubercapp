@@ -39,8 +39,14 @@ const styles = StyleSheet.create({
   
     touchableText: {
       color:'#82B1B6',
+    },
+    labelInfo:{
+      color:'#f05454',
+      fontSize:11,
+      textAlign: 'left',
+      justifyContent: "flex-start",
+      marginTop: 10,
     }
-  
   });
   
   export default styles;
