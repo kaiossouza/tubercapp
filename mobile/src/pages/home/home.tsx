@@ -29,14 +29,13 @@ const tuberculose = assets.tuberculose;
 
 export default function Home({navigation} : { navigation: any }){    
     const { user } = useContext(AuthContext);
-    console.log(user);
     const firstNameTrim = user ? user.name.substring(0, user.name.indexOf(" ")) : null;
     const firstUserName = user ? (firstNameTrim ? firstNameTrim : user.name) : "";
     const now = moment(new Date());
     const duration = moment.duration(now.diff(user?.treatmentStart));
     const treatmentDuration: number = user?.treatmentDuration ? user?.treatmentDuration : 0;
-    const percentDuration = parseInt(duration.asDays().toString()) / treatmentDuration;
-
+    const percentDuration = parseInt(duration.days().toString()) / treatmentDuration;
+    const percentIntDuration = parseInt((percentDuration * 100).toString()) ;
     return (
         <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
             <View style={styles.infoUser}>
@@ -45,7 +44,7 @@ export default function Home({navigation} : { navigation: any }){
             </View>
             {/* <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/> */}
             <View>
-              <Progress done={percentDuration * 100}/>
+              <Progress done={percentIntDuration}/>
             </View>
 
             <View style={styles.cards}>
