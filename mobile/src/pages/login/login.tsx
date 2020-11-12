@@ -10,9 +10,16 @@ export default function Login({ navigation } : { navigation: any }) {
     email: "",
     senha: ""
   });
+  const [ emailValidate, setEmailValidate ] = useState(false);
+  const [ passwordValidate, setPasswordValidate ] = useState(false);
+  const [ clickLogin, setClickLogin ] = useState(false);
 
   const login = () => {
-    handleLogin(credentials.email, credentials.senha);
+    setClickLogin(true);
+    validateInputs(credentials.email, credentials.senha);
+    if(emailValidate && passwordValidate) {
+      handleLogin(credentials.email, credentials.senha);
+    }
   }
 
   const handleEmailChange = (value: string) => {
@@ -29,10 +36,27 @@ export default function Login({ navigation } : { navigation: any }) {
     }));
   }
 
+  function validateInputs(email: string, senha: string) {
+    setPasswordValidate(passwordIsValid(senha));
+    setEmailValidate(emailIsValid(email));
+  }
+
+  function emailIsValid(email: string): boolean {
+    var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+    return reg.test(email) ? true : false;
+  } 
+  
+  function passwordIsValid(pVal: string): boolean { 
+    var reValid = /^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/; 
+    return reValid.test(pVal); 
+  }
+
   return (
     <View style={styles.container}>
       <Image source={require('../../../assets/logo.png')} style={styles.logo}></Image>
       <Text style={styles.labelText}>Tuberc</Text>
+      { !emailValidate && credentials.email.trim().length > 0 && clickLogin && <Text style={styles.labelInfo}>O e-mail que você digitou não está correto</Text> }
+      { !passwordValidate && credentials.senha.trim().length > 0 &&  clickLogin && <Text style={styles.labelInfo}>A senha que você digitou não está correta</Text> }
       <TextInput label="E-mail" value={credentials.email} onChangeText={handleEmailChange} style={styles.inputView}></TextInput>
       <TextInput 
         label="Senha" 
