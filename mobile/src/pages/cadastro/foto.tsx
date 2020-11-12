@@ -5,16 +5,19 @@ import { CAMERA_ROLL, askAsync } from 'expo-permissions';
 import { styles } from './styles';
 import Header from './header';
 import RegisterContext from '../../contexts/register';
-import { Button } from 'react-native-paper';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
-import api from '../../services/api';
-import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import AuthContext from '../../contexts/auth';
+import { User } from '../../models/user';
+import { addUser, getUser } from '../../services/storage';
 
-export default function Foto({ navigation } : {navigation: any}) {
-    const { user } = useContext(RegisterContext);
+
+export default function Foto({ navigation }) {
+    const { user, saveUser } = useContext(RegisterContext);
     const { handleLogin } = useContext(AuthContext);
     const [ image, setImage ] = useState<any | null>(null);
+    const [ base64, setBase64 ] = useState<string | null>("");
+    const [ loading, setLoading ] = useState(false);
 
     function componentDidMount() {
         getPermissionAsync();
@@ -40,34 +43,59 @@ export default function Foto({ navigation } : {navigation: any}) {
 
           if (!result.cancelled) {
             setImage(result.uri);
+            setBase64(result.base64 ?? "");
           }
         } catch (E) {
           console.log(E);
         }
     };
 
-    async function registerUser() {
-        const data = new FormData();
-    
-        data.append('picture', image);
-        data.append('user', JSON.stringify(user));
-    
-        let result = await api.post('/sessions', data);
-        handleLogin(result.data.email, result.data.senha);
+    async function storeUser() {
+        try{
+            setLoading(true);
+
+            let currentUser = ({
+                ...user,
+                picture: base64
+            } as User);
+
+            addUser(currentUser)
+                    .then((id) => {
+                        getUser(user?.email ?? "", user?.password ?? "").then(user => {
+                            saveUser(user);
+                            setLoading(false);
+                            handleLogin(user.email, user.password);
+                        });
+                    })
+                    .catch((err) => {
+                        alert(err);
+                    });
+
+        } catch(err) {
+            setLoading(false); 
+            alert(err);
+        }
     }
     
-    return (
-        <View style={styles.mainContainer}>
-            <Header pageNumber={9} totalPages={9} navigation={navigation}></Header>
-            <KeyboardAvoidingView style={styles.picContainer}>
-                <Text style={styles.labelText}>Quase lá! Escolha uma foto de perfil:</Text>
-                { image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require('../../../assets/logo.png')} style={styles.image} /> }   
-                <Button mode="contained" onPress={_pickImage} style={styles.button} labelStyle={styles.textButton}>Escolher foto</Button>              
-            </KeyboardAvoidingView>   
-            <TouchableOpacity  onPress={registerUser}  style={styles.picFooter}>                    
-                <Text style={styles.footerText}>Finalizar</Text>
-                <AntDesign name="rightcircle" size={20} color="#82B1B6"></AntDesign>
-            </TouchableOpacity>         
-        </View>
-    );
+    if(!loading) {
+        return (
+            <View style={styles.mainContainer}>
+                <Header pageNumber={9} totalPages={9} navigation={navigation}></Header>
+                <KeyboardAvoidingView style={styles.picContainer}>
+                    <Text style={styles.labelText}>Quase lá! Escolha uma foto de perfil:</Text>
+                    { image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require('../../../assets/logo.png')} style={styles.image} /> }   
+                    <Button mode="contained" onPress={_pickImage} style={styles.button} labelStyle={styles.textButton}>Escolher foto</Button>              
+                </KeyboardAvoidingView>   
+                <TouchableOpacity  onPress={storeUser} style={styles.picFooter}>                    
+                    <Text style={styles.footerText}>Finalizar</Text>
+                    <AntDesign name="rightcircle" size={20} color="#82B1B6"></AntDesign>
+                </TouchableOpacity>         
+            </View>
+        );
+    } else {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator></ActivityIndicator>
+            </View>);
+    }
 }

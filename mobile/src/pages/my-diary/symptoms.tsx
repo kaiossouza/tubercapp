@@ -14,9 +14,9 @@ import { AppLoading } from 'expo';
 IconFontisto.loadFont();
 IconFeather.loadFont();
 
-const symptomsImage = './../../../assets/symptoms-image.png';
-
 const Symptoms = () => {
+    let symptomsImage = require('../../../assets/symptoms-image.png');
+
     let [fontsLoaded] = useFonts({
       Cabin_400Regular,
     });
@@ -82,7 +82,7 @@ const Symptoms = () => {
                                   <Text style={styles.optionName}>{symptom.name}</Text>
                                 </View>
                                 <View style={styles.image}>
-                                    <Avatar size="small" activeOpacity={0.7} source={require(symptomsImage)} />
+                                    <Avatar size="small" activeOpacity={0.7} source={symptomsImage} />
                                 </View>
                             </View>
                           )

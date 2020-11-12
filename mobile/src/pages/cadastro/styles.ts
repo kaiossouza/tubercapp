@@ -31,6 +31,12 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#fff',
       },
+
+      loadingContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: '#82B1B6',
+      },
     
     labelText: {
         color:'#82B1B6',

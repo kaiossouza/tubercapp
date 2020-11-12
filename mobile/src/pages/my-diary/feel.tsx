@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import { Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Fontisto';
@@ -10,6 +10,9 @@ import {
     Cabin_400Regular
   } from '@expo-google-fonts/cabin';
 import { AppLoading } from 'expo';
+import AuthContext from '../../contexts/auth';
+import { getCurrentEntry, setDiary } from '../../services/storage';
+import DiaryEntry from '../../models/Diary';
 
 Icon.loadFont();
 IconFeather.loadFont();
@@ -18,49 +21,23 @@ export default function Feel({navigation}){
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
-    const [option1, setOption1] = useState(false);
-    const [option2, setOption2] = useState(false);
-    const [option3, setOption3] = useState(false);
 
-    let result1 = () => handlerOption1();
-    let result2 = () => handlerOption2();
-    let result3 = () => handlerOption3();
+    const [ feedback, setFeedback ] = useState(0);
+
+    getCurrentEntry().then(entry => {
+        setFeedback(entry.feedback);
+    });
+
+    let saveFeedback = function(feedback: number) {
+        getCurrentEntry().then(entry => {
+            entry.feedback = feedback;
+            //alert(JSON.stringify(entry));
+            setDiary(entry as DiaryEntry).then(e => {
+                setFeedback(e.feedback);
+            });            
+        });
+    }
     
-    var handlerOption1 = () => {
-        if(option1){
-            setOption1(false)
-            setOption2(false)
-            setOption3(false)
-        }else{
-            setOption1(true)
-            setOption2(false)
-            setOption3(false)
-        };
-    };
-
-    var handlerOption2 = () => {
-        if(option2){
-            setOption1(false)
-            setOption2(false)
-            setOption3(false)
-        }else{
-            setOption1(false)
-            setOption2(true)
-            setOption3(false)
-        }
-    };
-
-    var handlerOption3 = () => {
-        if(option3){
-            setOption1(false)
-            setOption2(false)
-            setOption3(false)
-        }else{
-            setOption1(false)
-            setOption2(false)
-            setOption3(true)
-        }
-    };
     if (!fontsLoaded) {
         return <AppLoading />;
     } else
@@ -71,10 +48,10 @@ export default function Feel({navigation}){
             </Text>
             <Divider style={styles.divider}/>
             <View style={styles.options}>
-                <TouchableWithoutFeedback onPress={result1}>
+                <TouchableWithoutFeedback onPress={() => saveFeedback(1)}>
                     <View style={styles.option}>
                         { 
-                            option1 ? <Icon color="#DB9E06" size={35} name="slightly-smile" />  : 
+                            feedback == 1 ? <Icon color="#DB9E06" size={35} name="slightly-smile" />  : 
                             <Icon color="black" size={35} name="slightly-smile" /> 
                         } 
                         <Text style={styles.optionName}>
@@ -82,10 +59,10 @@ export default function Feel({navigation}){
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={result2}>
+                <TouchableWithoutFeedback onPress={() => saveFeedback(2)}>
                     <View style={styles.option}>
                         { 
-                            option2 ? <Icon color="#DB9E06" size={35} name="neutral" />  : 
+                            feedback == 2 ? <Icon color="#DB9E06" size={35} name="neutral" />  : 
                                     <Icon color="black" size={35} name="neutral" />
                         }
                         <Text style={styles.optionName}>
@@ -93,10 +70,10 @@ export default function Feel({navigation}){
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={result3}>
+                <TouchableWithoutFeedback onPress={() => saveFeedback(3)}>
                     <View  style={styles.option}>
                         { 
-                            option3 ? <Icon color="#DB9E06" size={35} name="frowning" />  : 
+                            feedback == 3 ? <Icon color="#DB9E06" size={35} name="frowning" />  : 
                                     <Icon color="black" size={35} name="frowning" />
                         }
                         <Text style={styles.optionName}>

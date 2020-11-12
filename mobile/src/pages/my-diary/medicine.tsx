@@ -14,9 +14,10 @@ import {
 import { AppLoading } from 'expo';
 Icon.loadFont();
 IconFeather.loadFont();
-const pillsImage = './../../../assets/pills.png';
 
 export default function Medicine(){
+    let pillsImage = require('../../../assets/pills.png');
+
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
@@ -77,7 +78,7 @@ export default function Medicine(){
                                         <Text style={styles.optionDescription}>X mg, y pílulas</Text>
                                     </View>
                                     <View style={styles.image}>
-                                        <Avatar size="small" activeOpacity={0.7} source={require(pillsImage)} />
+                                        <Avatar size="small" activeOpacity={0.7} source={pillsImage} />
                                     </View>
                                 </View>
                             )

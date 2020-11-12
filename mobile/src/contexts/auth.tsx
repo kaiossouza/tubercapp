@@ -1,13 +1,17 @@
 import React, {createContext, useState} from 'react';
 import { login } from '../services/api';
 import { User } from './../models/user';
-import { View, Image } from 'react-native';
+import { View, Image, ActivityIndicator } from 'react-native';
+import { getCurrentEntry, getUser, setDiary } from '../services/storage';
+import DiaryEntry from '../models/Diary';
 
 interface AuthContextData {
     signed: boolean,
     user: User | null,
+    screenTitle: string,
     handleLogin(email: string, password: string): Promise<void>,
-    handleLogout(): Promise<void>
+    handleLogout(): Promise<void>,
+    setscreenTitle(name: string): void,
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -15,12 +19,15 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider: React.FC = ({children}) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
+    const [screenTitle, setscreenTitle] = useState("Tuberc");
     
     async function handleLogin(email: string, password: string) {
         setLoading(true);
-        var response = await login(email, password);
-        setUser(response.user);
-        setLoading(false);
+        getUser(email, password)
+            .then(user => {
+                setUser(user as User);
+                setLoading(false);
+            });
     }
 
     async function handleLogout() {
@@ -41,8 +48,10 @@ export const AuthProvider: React.FC = ({children}) => {
         <AuthContext.Provider value={{
             signed: !!user,
             user: user,
+            screenTitle: screenTitle,
             handleLogin,
-            handleLogout
+            handleLogout,
+            setscreenTitle,
         }}>
             {children}
         </AuthContext.Provider>

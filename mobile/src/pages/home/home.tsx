@@ -27,8 +27,9 @@ const medicineImage = assets.medicineImage;
 const symptonsImage = assets.symptonsImage;
 const tuberculose = assets.tuberculose;
 
-export default function Home({navigation} : { navigation: any }){
+export default function Home({navigation} : { navigation: any }){    
     const { user } = useContext(AuthContext);
+    console.log(user);
     const firstNameTrim = user ? user.name.substring(0, user.name.indexOf(" ")) : null;
     const firstUserName = user ? (firstNameTrim ? firstNameTrim : user.name) : "";
     const now = moment(new Date());
@@ -39,10 +40,10 @@ export default function Home({navigation} : { navigation: any }){
     return (
         <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
             <View style={styles.infoUser}>
-              <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('../../../assets/yuri.jpg')}/>
+              <Avatar size="large" rounded  containerStyle={styles.avatar} source={{ uri: user?.picture }}/>
               <Text style={styles.appName}>{firstUserName}</Text>
             </View>
-            <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/>
+            {/* <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/> */}
             <View>
               <Progress done={percentDuration * 100}/>
             </View>
