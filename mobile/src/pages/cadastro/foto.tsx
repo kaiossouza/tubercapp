@@ -12,7 +12,7 @@ import { User } from '../../models/user';
 import { addUser, getUser } from '../../services/storage';
 
 
-export default function Foto({ navigation }) {
+export default function Foto({ navigation }: {navigation: any}) {
     const { user, saveUser } = useContext(RegisterContext);
     const { handleLogin } = useContext(AuthContext);
     const [ image, setImage ] = useState<any | null>(null);

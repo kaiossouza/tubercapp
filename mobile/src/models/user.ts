@@ -12,7 +12,8 @@ export interface User extends Document {
     password: string,
     picture: string,
     treatmentStart: Date,
-    treatmentDuration: number
+    treatmentDuration: number,
+    emailGodFather: string
 };
 
 const UserSchema: Schema = new Schema({

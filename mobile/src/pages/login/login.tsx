@@ -61,7 +61,7 @@ export default function Login({ navigation } : { navigation: any }) {
       { !passwordValidate && credentials.senha.trim().length > 0 &&  clickLogin && <Text style={styles.labelInfo}>A senha que você digitou não está correta</Text> }
       { credentials.email.trim().length == 0 && clickLogin && <Text style={styles.labelInfo}>Digite um e-mail.</Text> }
       { credentials.senha.trim().length == 0 && clickLogin &&  <Text style={styles.labelInfo}>Digite uma senha.</Text> }
-      <TextInput label="E-mail" value={credentials.email} onChangeText={handleEmailChange} style={styles.inputView}></TextInput>
+      <TextInput label="E-mail" value={credentials.email} onChangeText={handleEmailChange} style={styles.inputView} autoCompleteType="email" keyboardType="email-address" textContentType="emailAddress" ></TextInput>
       <TextInput 
         label="Senha" 
         value={credentials.senha} 

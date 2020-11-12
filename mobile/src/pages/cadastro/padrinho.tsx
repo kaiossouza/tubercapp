@@ -15,7 +15,8 @@ export default function Padrinho({ navigation } : {navigation: any}) {
     function handleInput(value: string) {
         setEmailValidate(isValid(value));
         saveUser({
-            ...user
+            ...user,
+            emailGodFather: value
         } as User);
     }
 
