@@ -10,7 +10,7 @@ import { AppLoading } from 'expo';
 
 IconFeather.loadFont();
 
-export default function MinhaClinica({navigation} : {navigation: any}){
+export default function Duvidas({navigation} : {navigation: any}){
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
