@@ -22,7 +22,7 @@ export default function MinhaClinica({navigation} : {navigation: any}){
             <View style={{backgroundColor:'#fff', flex: 1}}>
                 <Appbar.Header style={{backgroundColor:"#ffff"}}>
                     <Appbar.Action  color="#7d8597" icon={require('../../../assets/goback.png')} onPress={() => navigation.goBack()} />  
-                    <Appbar.Content titleStyle={{color: "#7d8597", alignSelf: 'flex-start'}} title="" />
+                    <Appbar.Content titleStyle={{color: "#7d8597", alignSelf: 'flex-start'}} title="Minha Clínica" />
                 </Appbar.Header>
                 <View style={styles.screen}>
                     <Image
