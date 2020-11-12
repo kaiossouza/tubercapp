@@ -28,7 +28,7 @@ function CustomDrawerContent({ props, navigation } : { props: any, navigation: a
     return (
       <DrawerContentScrollView {...props} style={{flex: 1}}>
         <DrawerItem style={styles.drawerStyle} icon={() => (<IconFontisto name="close-a" size={20} color="#adb5bd"/>)} label="" onPress={() => props.navigation.closeDrawer()} />
-        <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={20}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => props.navigation.navigate("Home")}/>
+        <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={20}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => navigation.navigate("Home")}/>
         <DrawerItem icon={() => (<IconFontisto name="heart-alt" size={20}/>)} labelStyle={{fontSize: 20}} label="Exames" onPress={() => {navigation.navigate('Exames')}}/>
         <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Minha Clínica" onPress={() => {navigation.navigate('MinhaClinica')}}/>
         <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Dúvidas" onPress={() => {navigation.navigate('Duvidas')}}/>
