@@ -10,10 +10,12 @@ export default function Login({ navigation } : { navigation: any }) {
     email: "",
     senha: ""
   });
-  const [ emailValidate, setEmailValidate ] = useState(true);
-  const [ passwordValidate, setPasswordValidate ] = useState(true);
+  const [ emailValidate, setEmailValidate ] = useState(false);
+  const [ passwordValidate, setPasswordValidate ] = useState(false);
+  const [ clickLogin, setClickLogin ] = useState(false);
 
   const login = () => {
+    setClickLogin(true);
     validateInputs(credentials.email, credentials.senha);
     if(emailValidate && passwordValidate) {
       handleLogin(credentials.email, credentials.senha);
@@ -53,8 +55,8 @@ export default function Login({ navigation } : { navigation: any }) {
     <View style={styles.container}>
       <Image source={require('../../../assets/logo.png')} style={styles.logo}></Image>
       <Text style={styles.labelText}>Tuberc</Text>
-      { !emailValidate && <Text style={styles.labelInfo}>O e-mail que você digitou não está correto</Text> }
-      { !passwordValidate && <Text style={styles.labelInfo}>A senha que você digitou não está correta</Text> }
+      { !emailValidate && credentials.email.trim().length > 0 && clickLogin && <Text style={styles.labelInfo}>O e-mail que você digitou não está correto</Text> }
+      { !passwordValidate && credentials.senha.trim().length > 0 &&  clickLogin && <Text style={styles.labelInfo}>A senha que você digitou não está correta</Text> }
       <TextInput label="E-mail" value={credentials.email} onChangeText={handleEmailChange} style={styles.inputView}></TextInput>
       <TextInput 
         label="Senha" 
