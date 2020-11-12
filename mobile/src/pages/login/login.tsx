@@ -23,6 +23,7 @@ export default function Login({ navigation } : { navigation: any }) {
   }
 
   const handleEmailChange = (value: string) => {
+    setClickLogin(false);
     setCredentials(prevState => ({
       ...prevState,
       email: value
@@ -30,6 +31,7 @@ export default function Login({ navigation } : { navigation: any }) {
   }
 
   const handlePasswordChange = (value: string) => {
+    setClickLogin(false);
     setCredentials(prevState => ({
       ...prevState,
       senha: value
@@ -57,6 +59,8 @@ export default function Login({ navigation } : { navigation: any }) {
       <Text style={styles.labelText}>Tuberc</Text>
       { !emailValidate && credentials.email.trim().length > 0 && clickLogin && <Text style={styles.labelInfo}>O e-mail que você digitou não está correto</Text> }
       { !passwordValidate && credentials.senha.trim().length > 0 &&  clickLogin && <Text style={styles.labelInfo}>A senha que você digitou não está correta</Text> }
+      { credentials.email.trim().length == 0 && clickLogin && <Text style={styles.labelInfo}>Digite um e-mail.</Text> }
+      { credentials.senha.trim().length == 0 && clickLogin &&  <Text style={styles.labelInfo}>Digite uma senha.</Text> }
       <TextInput label="E-mail" value={credentials.email} onChangeText={handleEmailChange} style={styles.inputView}></TextInput>
       <TextInput 
         label="Senha" 
