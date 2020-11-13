@@ -5,6 +5,16 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 10,
     },
+    logo:{
+      width:300,
+      height:300,
+      marginBottom:20
+    },
+    smallLogo:{
+      width:150,
+      height:150,
+      marginBottom:10
+    },
     appName:{
       alignSelf:'center',
       marginTop: 5,
@@ -24,7 +34,10 @@ export const styles = StyleSheet.create({
       marginBottom: 5
     },
     cards:{
-      marginVertical: 20
+      marginVertical: 20,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     card:{
       margin: 10,
@@ -33,6 +46,8 @@ export const styles = StyleSheet.create({
       borderRadius: 20,
       width: 350,
       alignSelf: 'center',
+      flex: 1,
+      flexDirection: 'column'
     },
     content:{
         flexDirection: 'row',
@@ -63,9 +78,14 @@ export const styles = StyleSheet.create({
     },
     cardContent:{
         flex: 1,
-        paddingLeft: 20,
-        paddingTop: 15
+        flexDirection: 'column',
+        alignContent: 'center',
+        justifyContent: 'center',
     },
+    cardContentRow:{
+      flex: 1,
+      flexDirection: 'row',
+  },
     cardContentMedicine:{
       flex: 1,
       paddingLeft: 20,
@@ -80,6 +100,41 @@ export const styles = StyleSheet.create({
         flex: 0.2,
         alignItems: 'center',
         paddingTop: 17,
+    },
+    dateTitle:{
+      color: 'white',
+      fontSize: 15,
+      paddingBottom: 3,
+      //paddingLeft: 30,
+      fontWeight: 'bold'
+    },
+    comment:{
+      color: 'white',
+      fontSize: 15,
+      paddingBottom: 3,
+      alignContent: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      width: '80%'
+    },
+    commentBlack:{
+      color: 'black',
+      fontSize: 15,
+      paddingBottom: 3,
+      alignContent: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      width: '80%'
+    },
+    commentBlackBold:{
+      color: 'black',
+      fontSize: 15,
+      paddingBottom: 3,
+      alignContent: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      width: '80%',
+      fontWeight: 'bold'
     },
     title:{
         color: 'black',
