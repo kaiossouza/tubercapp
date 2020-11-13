@@ -148,6 +148,7 @@ export const styles = StyleSheet.create({
       color: 'black',
       fontSize: 15,
       paddingBottom: 3,
+      paddingTop: 3,
       flex: 1,
       fontWeight: 'bold',
       alignSelf: "center"
@@ -204,7 +205,7 @@ export const styles = StyleSheet.create({
     },
     subDivider:{
       height: 3,
-      width: '100%',
+      width: '70%',
       alignSelf: 'center',
       marginTop: 5,
       opacity: 0.5
