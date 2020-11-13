@@ -44,7 +44,7 @@ export default function Home({navigation} : { navigation: any }){
                 {user?.picture ? imageProfile : imageProfileNull}
                 <Text style={styles.appName}>{firstUserName}</Text>
             </View>
-            {/* <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/> */}
+            <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/>
             <View>
               <Progress done={percentIntDuration}/>
             </View>
