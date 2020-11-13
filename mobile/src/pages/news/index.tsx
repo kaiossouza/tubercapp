@@ -19,15 +19,6 @@ IconEvilIcons.loadFont();
 Icon.loadFont();
 IconFontisto.loadFont();
 
-const assets = new tubercAssets('../../../assets/');
-const pillsImage = assets.pills;
-const setBottom = assets.setBottom;
-const yuri = assets.yuri;
-const thinkingImage = assets.thinkingImage;
-const medicineImage = assets.medicineImage;
-const symptonsImage = assets.symptonsImage;
-const tuberculose = assets.tuberculose;
-
 export default class News extends Component {
     state = {
       newsList: [],
@@ -37,7 +28,6 @@ export default class News extends Component {
     async componentDidMount() {
       getNews().then(
         res => {
-            //console.log(res);
             this.setState({
               newsList: res.data.items,
               loading: false
@@ -48,8 +38,6 @@ export default class News extends Component {
 
     renderItem(data: any){
       let newsCardData = data.item;
-      //console.log(newsCardData);
-
       let Image_Http_URL = { 
         uri: newsCardData.pagemap?.cse_image[0].src 
       };
@@ -129,14 +117,14 @@ const styles = StyleSheet.create({
     },
     labelPlusText: {
       color:'#666666',
-      fontSize:14
+      fontSize:14,
     },
     labelPlus: {
         padding: 10,
         margin: 10,
         width: "95%",
         backgroundColor: '#fff',
-        borderRadius: 5,
+        borderRadius: 15,
         flexDirection: 'column',
         flex: 1,
         alignItems: 'center',
@@ -145,7 +133,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flex: 1,
         alignItems: 'center',
-        paddingBottom:10
+        paddingBottom:10,
+        paddingTop:20
     },
     cardDate:{
       color: '#666666',
@@ -157,7 +146,7 @@ const styles = StyleSheet.create({
       margin: 10,
       width: "95%",
       backgroundColor: '#fff',
-      borderRadius: 5,
+      borderRadius: 15,
       alignSelf: 'center',
     },
     content:{
