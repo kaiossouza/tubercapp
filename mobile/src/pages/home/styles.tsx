@@ -44,6 +44,12 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    cardNoResults:{
+      marginBottom: 20,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     card:{
       margin: 10,
       height: "auto",
@@ -127,7 +133,7 @@ export const styles = StyleSheet.create({
       textAlign: "center",
     },
     comment:{
-      color: 'white',
+      color: 'black',
       fontSize: 15,
       paddingBottom: 3,
       alignContent: 'center',

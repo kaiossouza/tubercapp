@@ -10,7 +10,7 @@ import moment from 'moment';
 
 export default function Tratamento({ navigation } : { navigation: any }) {
     const { user, saveUser } = useContext(RegisterContext);
-    const [date, setDate] = useState(new Date(1598051730000));
+    const [date, setDate] = useState(new Date());
     const [dataValidation, setDataValidation] = useState(false);
     const image = "./../../../assets/images/cadastro/alarme.png";
 
@@ -41,7 +41,7 @@ export default function Tratamento({ navigation } : { navigation: any }) {
                 <Text style={styles.labelText}>Qual a data inicial do tratamento?</Text>
                 <Text style={styles.labelInfo}>A data inicial deve ser no máximo a data de hoje</Text>
                 <DatePicker 
-                    format="DD/MM/YYYY"
+                    format="DD MMM YYYY"
                     style={styles.dateComponent}
                     date={date}
                     onDateChange={changeDate}

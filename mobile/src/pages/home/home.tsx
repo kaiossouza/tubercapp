@@ -33,7 +33,7 @@ export default function Home({navigation} : { navigation: any }){
 
     function resultFillDiary(){
         let date = new Date();
-        let entry = user?.diary.filter((e) => {
+        let entry = user?.diary?.filter((e) => {
             let eDate = new Date(e.date.toString());
             if(eDate.toISOString) {                
                 return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
@@ -49,9 +49,9 @@ export default function Home({navigation} : { navigation: any }){
         const medicineImageGray =  <Avatar size="small" rounded  containerStyle={styles.avatar} source={require('./../../../assets/medicine-image-gray.png')}/>;
         const sympthonImageGray =  <Avatar size="small" rounded  containerStyle={styles.avatar} source={ require('./../../../assets/sympthoms-image-gray.png')}/>;    
     
-        var hasFeel: boolean = entry[0].feedback > 0;
-        var hasMedicine: boolean = entry[0].medicine.length > 0;
-        var hasSympthoms: boolean = entry[0].simptoms.length > 0;
+        var hasFeel: boolean = entry[0]?.feedback ? entry[0]?.feedback > 0 : false;
+        var hasMedicine: boolean = entry[0]?.medicine.length > 0;
+        var hasSympthoms: boolean = entry[0]?.simptoms.length > 0;
 
         var resultDiary = 0;
         if(hasFeel) resultDiary++;
@@ -73,7 +73,7 @@ export default function Home({navigation} : { navigation: any }){
         )
     }
     
-    function feeling(feedback: number) {
+    function feeling(feedback: number, notFeedback: boolean) {
         if(feedback == 1){
             return (
                 <View style={styles.cardContent}>
@@ -86,11 +86,17 @@ export default function Home({navigation} : { navigation: any }){
                     <Image style={styles.smallLogo} source={require('../../../assets/sad.png')}></Image>
                     <Text style={styles.commentBlack} >Você não está se sentindo muito bem.</Text>
                 </View>);
-        } else {
+        } else if (feedback == 2){
             return (
                 <View style={styles.cardContent}>
                     <Image style={styles.smallLogo} source={require('../../../assets/blue.png')}></Image>
                     <Text style={styles.commentBlack} >Você não está bem. Que tal ligar para o seu médico?</Text>
+                </View>);
+        } else if(notFeedback) {
+            return (
+                <View style={styles.cardContent}>
+                    <Image style={styles.smallLogo} source={require('../../../assets/hander-pana.png')}></Image>
+                    <Text style={styles.commentBlack}>Você não informou como se sente hoje</Text>
                 </View>);
         }
     }
@@ -133,7 +139,7 @@ export default function Home({navigation} : { navigation: any }){
 
     function resume() {
         let date = new Date();
-        let entry = user?.diary.filter((e) => {
+        let entry = user?.diary?.filter((e) => {
             let eDate = new Date(e.date.toString());
             if(eDate.toISOString) {                
                 return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
@@ -144,24 +150,24 @@ export default function Home({navigation} : { navigation: any }){
 
         let dateStr = date.toISOString().split('T')[0];
         let formattedDate = `${dateStr.split('-')[2]}/${dateStr.split('-')[1]}/${dateStr.split('-')[0]}`;
-        var filled = entry.length > 0 && checkIfFilled(entry[0]);
+        var filled = entry && entry[0] ? entry.length > 0 && checkIfFilled(entry[0]) : false;
 
         if(filled) {
             return (
                 <View>
                     <Text style={styles.dateTitleFeeling}>Seu resumo de hoje, {formattedDate}</Text>
                     <View style={{flex: 1, width: "100%", marginBottom: 20}}>
-                        { feeling(entry[0].feedback) }
+                        { feeling(entry[0]?.feedback ? entry[0]?.feedback : 0, entry[0]?.feedback ? true : false) }
                         <Divider style={styles.subDivider} />
-                        { symptoms(entry[0].simptoms) }
+                        { symptoms(entry[0]?.simptoms) }
                          <Divider style={styles.subDivider} />
-                        { medicine(entry[0].medicine) }
+                        { medicine(entry[0]?.medicine) }
                     </View>                     
                 </View>
             );
         } else {
             return (
-                <View style={styles.cards}>
+                <View style={styles.cardNoResults}>
                     <Text style={styles.dateTitle}>Seu resumo de hoje, {date.toDateString()}</Text>
                     <Image style={styles.logo} source={require('../../../assets/hander-pana.png')}></Image>
                     <Text style={styles.comment} >Você ainda não preencheu nada hoje, corre lá no seu diário!</Text>
@@ -223,7 +229,7 @@ const Progress = ({done} : {done: any}) => {
             fontSize: 15,
             color: '#fff',
           }}>
-          {done}%
+          { done < 10 ? '' : `${done}%`}
         </Text>
       </LinearGradient>
 		</View>

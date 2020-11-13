@@ -2,7 +2,7 @@ import Medicine from "../pages/my-diary/medicine";
 
 export default class DiaryEntry {
     date: Date = new Date();
-    feedback: number = 1;
+    feedback: number = 0;
     simptoms: string[] = [];
     medicine: string[] = [];
     availableMedicine: string[] = [];  

@@ -177,7 +177,7 @@ export default function Settings({navigation} : {navigation: any}){
                     <Text style={styles.labelText}>Data de Nascimento</Text>
                     { !nascValidation && clickSave && <Text style={styles.labelInfo}>Informe a data correta</Text> }
                     <DatePicker 
-                        format="DD/MM/YYYY"
+                        format="DD MMM YYYY"
                         style={styles.dateComponent}
                         date={dateNasc}
                         onDateChange={changeNascInput}
@@ -216,7 +216,7 @@ export default function Settings({navigation} : {navigation: any}){
                             <Text style={styles.labelText}>Data do início do tratamento</Text>
                     { !treatmentDateValidation && clickSave && <Text style={styles.labelInfo}>Informe a data correta</Text> }
                     <DatePicker 
-                        format="DD/MM/YYYY"
+                        format="DD MMM YYYY"
                         style={styles.dateComponent}
                         date={treatmentDate}
                         onDateChange={changeTreatmentDateInput}
