@@ -28,7 +28,6 @@ export default function Medicine() {
     const [date, setDate] = useState(new Date());
     const [medicine, setMedicine] = useState<string>("[]");
     const [modalVisible, setModalVisible] = useState(false);
-
     const [availableMedicine, setAvailableMedicine] = useState<string>("[]");
     const [medicineInput, setMedicineInput] = useState<string>("");
 
@@ -66,18 +65,35 @@ export default function Medicine() {
         var parsedAvailableMedicine = JSON.parse(availableMedicine ?? "[]") as string[];
         if(entry.length > 0) {
             setMedicine(JSON.stringify(entry[0].medicine));
-            if(entry[0].availableMedicine) {
-                setAvailableMedicine(JSON.stringify(entry[0].availableMedicine));
-                updateAvailableMedicine(entry[0].availableMedicine);
-            } else {                
-                updateAvailableMedicine(parsedAvailableMedicine);
-            }
+            // if(entry[0].availableMedicine) {
+            //     setAvailableMedicine(JSON.stringify(entry[0].availableMedicine));
+            //     updateAvailableMedicine(entry[0].availableMedicine);
+            // } else {                
+            //     updateAvailableMedicine(parsedAvailableMedicine);
+            // }
             setDate(selectedDate); 
         } else { 
-            updateAvailableMedicine(parsedAvailableMedicine);
+            //updateAvailableMedicine(parsedAvailableMedicine);
             setMedicine("[]");
             setDate(selectedDate); 
-        }           
+        }  
+
+        if(parsedAvailableMedicine.length > 0) {
+            if(entry.length > 0) {
+                //setMedicine(JSON.stringify(entry[0].medicine));
+                if(entry[0].availableMedicine && entry[0].availableMedicine.length > 0) {
+                    setAvailableMedicine(JSON.stringify(entry[0].availableMedicine));
+                    updateAvailableMedicine(entry[0].availableMedicine);
+                } else {                
+                    //updateAvailableMedicine(parsedAvailableMedicine);
+                }
+                //setDate(selectedDate); 
+            } else { 
+                updateAvailableMedicine(parsedAvailableMedicine);
+                //setMedicine("[]");
+                //setDate(selectedDate); 
+            }  
+        }
     };
 
     function updateMedicine(medicine: string) {
@@ -144,7 +160,7 @@ export default function Medicine() {
             
             if(entry.length > 0) {
                 setMedicine(JSON.stringify(entry[0].medicine));
-                if(entry[0].availableMedicine) {
+                if(entry[0].availableMedicine && entry[0].availableMedicine.length > 0) {
                     setAvailableMedicine(JSON.stringify(entry[0].availableMedicine));
                 }
             } else { 
@@ -168,6 +184,7 @@ export default function Medicine() {
     function deleteMedicine(medicine: string) {
         var parsedAvailableMedicine = JSON.parse(availableMedicine ?? "[]") as string[];
         updateAvailableMedicine(parsedAvailableMedicine.filter(m => m != medicine));
+        saveMedicine(medicine);
     }
 
     function updateAvailableMedicine(availableMedicine: string[]) {
@@ -316,7 +333,8 @@ export default function Medicine() {
 
 const styles = StyleSheet.create({
     dateComponent: {
-        width: 350
+        width: 350,
+        padding: 30
     },
     
     divider:{

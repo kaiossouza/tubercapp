@@ -80,7 +80,7 @@ export default function Feel(){
         } else { 
             setFeedback(0);
             setDate(selectedDate); 
-        }           
+        }       
     };
 
     let saveFeedback = function(feedback: number) {
