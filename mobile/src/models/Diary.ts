@@ -3,8 +3,5 @@ export default class DiaryEntry {
     feedback: number = 1;
     simptoms: string[] = [];
     medicine: string[] = [];
-
-    constructor(){
-
-    }   
+    availableMedicine: string[] = [];  
 };

@@ -37,7 +37,7 @@ export default class News extends Component {
     async componentDidMount() {
       getNews().then(
         res => {
-            console.log(res);
+            //console.log(res);
             this.setState({
               newsList: res.data.items,
               loading: false
@@ -48,7 +48,7 @@ export default class News extends Component {
 
     renderItem(data: any){
       let newsCardData = data.item;
-      console.log(newsCardData);
+      //console.log(newsCardData);
 
       let Image_Http_URL = { 
         uri: newsCardData.pagemap?.cse_image[0].src 
@@ -81,8 +81,6 @@ export default class News extends Component {
 
       getNews(newsList.length + 1).then(
         res => {
-            console.log(res);
-            
             for(let i = 0; i < res.data.items.length; i++) {
               var item = res.data.items[0];
               oldList.push(item as never);
@@ -94,7 +92,6 @@ export default class News extends Component {
             });
         }
       ).catch(err => {
-          console.log(err);
           this.setState({
             newsList: oldList,
             loading: false

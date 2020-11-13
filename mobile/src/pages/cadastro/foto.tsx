@@ -40,7 +40,6 @@ export default function Foto({ navigation } : {navigation: any}) {
 
           if (!result.cancelled) {
             setImage(result.uri);
-            setBase64(result.base64 ?? "");
           }
         } catch (E) {
           console.log(E);

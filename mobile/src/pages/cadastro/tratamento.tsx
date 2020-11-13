@@ -41,11 +41,11 @@ export default function Tratamento({ navigation } : { navigation: any }) {
                 <Text style={styles.labelText}>Qual a data inicial do tratamento?</Text>
                 <Text style={styles.labelInfo}>A data inicial deve ser no máximo a data de hoje</Text>
                 <DatePicker 
-                    format="DD MMM YYYY"
+                    format="DD/MM/YYYY"
                     style={styles.dateComponent}
                     date={date}
                     onDateChange={changeDate}
-                    locale={'pt-br'}
+                    locale={'pt-BR'}
                 />
                 { dataValidation && <Footer navigation={navigation} goTo="Duracao"></Footer>}         
             </KeyboardAvoidingView>            

@@ -18,20 +18,17 @@ export default function Settings({navigation} : {navigation: any}){
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
-    const [ image, setImage ] = useState<any | null>(null);
-    const [ base64, setBase64 ] = useState<string | null>("");
-    const { user } = useContext(AuthContext);
-
-    //NAO FUNCIONA, MUDAR PARA UM METODO ASYNC STORAGE
-    const { saveUser } = useContext(RegisterContext);
+    
+    const { user, updateUser } = useContext(AuthContext);
 
     const [ name, setName ] = useState(user?.name);
     const [ email, setEmail ] = useState(user?.email);
-    const [ dateNasc, setDateNasc ] = useState(user?.nasc);
+    const [ dateNasc, setDateNasc ] = useState(new Date(user?.nasc ?? ""));
     const [ treatment, setTreatment ] = useState(user?.treatmentDuration);
     const [ gender, setGender ] = useState(user?.gender);
     const [ emailGodFather, setEmailGodFather ] = useState(user?.emailGodFather);
     const [ treatmentDate, setTreatmentDate ] = useState(user?.treatmentStart);
+    const [ image, setImage ] = useState<any | null>(user?.picture);
     const [ nascValidation, setNascValidation ] = useState(true);
     const [ durationValidation, setDurationValidation ] = useState(true);
     const [ emailValidation, setEmailValidation ] = useState(true);
@@ -68,56 +65,7 @@ export default function Settings({navigation} : {navigation: any}){
         setTreatmentDateValidation(treatmentDateIsValid(value));
         setTreatmentDate(value);
     }
-
-    function saveName () {
-        saveUser({
-            ...user,
-            name: name
-        } as User);
-    }
-
-    function saveEmail () {
-        saveUser({
-            ...user,
-            email: email
-        } as User);
-    }
-
-    function saveEmailGodFather () {
-        saveUser({
-            ...user,
-            emailGodFather: emailGodFather
-        } as User);
-    }
-
-    function saveNasc () {
-        saveUser({
-            ...user,
-            nasc: dateNasc
-        } as User);
-    };
     
-    function saveTreatmentDate() {
-        saveUser({
-            ...user,
-            treatmentStart: treatmentDate
-        } as User);
-    };
-
-    function saveGender() {
-        saveUser({
-            ...user,
-            gender: gender
-        } as User);
-    }
-
-    function saveTreatment() {
-        saveUser({
-            ...user,
-            treatmentDuration: treatment
-        } as User);
-    }
-
     async function _pickImage() {
         try {
           let result = await launchImageLibraryAsync({
@@ -129,7 +77,6 @@ export default function Settings({navigation} : {navigation: any}){
 
           if (!result.cancelled) {
             setImage(result.uri);
-            setBase64(result.base64 ?? "");
           }
         } catch (E) {
           console.log(E);
@@ -138,15 +85,36 @@ export default function Settings({navigation} : {navigation: any}){
 
     async function save() {
         setClickSave(true);
-        if(isValid()){
-            saveName();
-            saveEmail();
-            saveNasc();
-            saveTreatment();
-            saveGender();
-            saveEmailGodFather();
-            saveTreatmentDate();
-            navigation.goBack();
+        if(isValid()) {
+            storeUser();            
+        } else {
+            alert("Preencha todos os dados corretamente!");
+        }
+    }
+
+    async function storeUser() {
+        try{
+            let currentUser = ({
+                ...user,
+                treatmentDuration: treatment,
+                gender: gender,
+                treatmentStart: treatmentDate,
+                nasc: dateNasc,
+                emailGodFather: emailGodFather,
+                email: email,
+                name: name,
+                picture: image
+            } as User);
+
+            updateUser(currentUser)
+                    .then(() => {
+                        navigation.navigate("Home"); 
+                    })
+                    .catch((err) => {
+                        alert(err);
+                    });
+        } catch(err) { 
+            alert(err);
         }
     }
 
@@ -209,11 +177,13 @@ export default function Settings({navigation} : {navigation: any}){
                     <Text style={styles.labelText}>Data de Nascimento</Text>
                     { !nascValidation && clickSave && <Text style={styles.labelInfo}>Informe a data correta</Text> }
                     <DatePicker 
-                        format="DD MMM YYYY"
+                        format="DD/MM/YYYY"
                         style={styles.dateComponent}
                         date={dateNasc}
                         onDateChange={changeNascInput}
-                        locale={'pt-br'}
+                        locale={'pt-BR'}
+                        confirmBtnText="OK"
+                        cancelBtnText="Cancelar"
                     />
                 </View>
                 <View style={styles.box}>
@@ -247,11 +217,13 @@ export default function Settings({navigation} : {navigation: any}){
                     <Text style={styles.labelText}>Data do início do tratamento</Text>
                     { !treatmentDateValidation && clickSave && <Text style={styles.labelInfo}>Informe a data correta</Text> }
                     <DatePicker 
-                        format="DD MMM YYYY"
+                        format="DD/MM/YYYY"
                         style={styles.dateComponent}
                         date={treatmentDate}
                         onDateChange={changeTreatmentDateInput}
-                        locale={'pt-br'}
+                        locale={'pt-BR'}
+                        confirmBtnText="OK"
+                        cancelBtnText="Cancelar"
                     />
                 </View>
                 <View style={styles.footer}>

@@ -14,11 +14,11 @@ Icon.loadFont();
 
 const {width, height} = Dimensions.get("window");
 
-const Slide = ({index, navigation}) => {
+const Slide = ({index, navigation} : {index:number, navigation: any}) => {
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
-    const slide = index === 0 ? < Feel /> : (index === 1 ? <Medicine navigation={navigation} /> : (index === 2 ? <Symptoms/> : <DiaryResume/> ));
+    const slide = index === 0 ? <Feel /> : (index === 1 ? <Symptoms navigation={navigation} /> : (index === 2 ? <Medicine/> : <DiaryResume/> ));
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
