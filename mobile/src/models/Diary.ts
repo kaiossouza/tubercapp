@@ -7,8 +7,4 @@ export default class DiaryEntry {
     constructor(){
 
     }   
-    
-    getKey(): string {
-        return this.date.toDateString();
-    }
 };
