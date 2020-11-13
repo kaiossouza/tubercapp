@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import { StyleSheet, Text, Dimensions, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import IconFeather from 'react-native-vector-icons/Feather';
 import CardInfo from '../../components/card-info';
 import {
@@ -8,7 +8,6 @@ import {
   } from '@expo-google-fonts/cabin';
 import { AppLoading } from 'expo';
 import { Agenda } from 'react-native-calendars';
-import {Card, Avatar} from 'react-native-paper';
 import AuthContext from '../../contexts/auth';
 import { DiarySummary } from '../../models/Diary';
 
@@ -120,12 +119,13 @@ const DiaryResume = () => {
         return <AppLoading />;
     } else {
         return (
-            <View style={{flex: 1}}>
+            <View style={styles.agenda}>
                 <Agenda
                     items={items}
                     loadItemsForMonth={loadItems}
                     selected={Date.now()}
                     renderItem={renderItem}
+                    style={{borderRadius: 20}}
                 />
             </View>
         );
@@ -140,6 +140,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         maxHeight: height * 0.8,
         height: height * 0.8,
-        marginTop: 15
+        marginTop: 15,
     }
 });

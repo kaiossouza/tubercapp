@@ -141,6 +141,7 @@ const Symptoms = () => {
       return (
           <Card containerStyle={styles.card}>
               <Animated.ScrollView
+              contentContainerStyle={{ height: height * 0.8 }}
               decelerationRate="fast"
               bounces={false}
               scrollToOverflowEnabled={true}

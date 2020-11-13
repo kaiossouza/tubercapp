@@ -215,9 +215,9 @@ export default function Medicine() {
     } else {
         if(!modalVisible) {
             return (
-                <View>
                     <Card containerStyle={styles.card}>                    
                         <Animated.ScrollView
+                            contentContainerStyle={{ height: height * 0.8 }}
                             decelerationRate="fast"
                             bounces={false}
                             scrollToOverflowEnabled={true}
@@ -256,12 +256,13 @@ export default function Medicine() {
                             }
                         </Animated.ScrollView>
                     </Card>
-                </View>);
+                    );
         } else {
             return (
                 <View>
                     <Card containerStyle={styles.card}>                    
                         <Animated.ScrollView
+                            contentContainerStyle={{ height: height * 0.8 }}
                             decelerationRate="fast"
                             bounces={false}
                             scrollToOverflowEnabled={true}
@@ -270,7 +271,7 @@ export default function Medicine() {
                             <Text style={styles.titleMedicine}>
                                 Medicamentos
                             </Text>  
-                            <TouchableOpacity onPress={() => openEdition()}>
+                            <TouchableOpacity onPress={() => openEdition()} >
                                 <AntDesign name="checkcircleo" size={20} color="#82B1B6"></AntDesign>
                             </TouchableOpacity>                          
                         </View>
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     editOption:{
-        paddingEnd: 20,
+        paddingEnd: 10,
         marginTop: 15,
         marginBottom: 15,
         flexDirection: 'row',
@@ -455,8 +456,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'center',
         justifyContent: 'center',
-        fontSize: 20,
-        marginTop: 10,
+        fontSize: 20
     },
     divider2:{
         height: 3,
@@ -469,12 +469,9 @@ const styles = StyleSheet.create({
         fontSize: 19,
     },
     medicineTitleContent:{
-        flex: 1,
         flexDirection:'row', 
-        alignSelf: 'center',
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 10
     },
     medicineInfo:{
         flex: 1,
