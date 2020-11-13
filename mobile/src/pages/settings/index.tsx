@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { Text, View, StyleSheet, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
-import { Appbar, Button,TextInput } from 'react-native-paper';
+import { Appbar, Button,DarkTheme,TextInput } from 'react-native-paper';
 import {
     useFonts,
     Cabin_400Regular
@@ -27,7 +27,7 @@ export default function Settings({navigation} : {navigation: any}){
     const [ treatment, setTreatment ] = useState(user?.treatmentDuration);
     const [ gender, setGender ] = useState(user?.gender);
     const [ emailGodFather, setEmailGodFather ] = useState(user?.emailGodFather);
-    const [ treatmentDate, setTreatmentDate ] = useState(user?.treatmentStart);
+    const [ treatmentDate, setTreatmentDate ] = useState(new Date(user?.treatmentStart ?? ""));
     const [ image, setImage ] = useState<any | null>(user?.picture);
     const [ nascValidation, setNascValidation ] = useState(true);
     const [ durationValidation, setDurationValidation ] = useState(true);
@@ -213,7 +213,7 @@ export default function Settings({navigation} : {navigation: any}){
                     <TextInput autoCompleteType="email" keyboardType="email-address" textContentType="emailAddress" style={styles.inputView} onChangeText={changeEmailGodFatherInput} value={emailGodFather}></TextInput>  
                 </View>
                 <View style={styles.box}>
-                    <Text style={styles.labelText}>Data do início do tratamento</Text>
+                            <Text style={styles.labelText}>Data do início do tratamento</Text>
                     { !treatmentDateValidation && clickSave && <Text style={styles.labelInfo}>Informe a data correta</Text> }
                     <DatePicker 
                         format="DD/MM/YYYY"
