@@ -4,35 +4,52 @@ import { Avatar } from 'react-native-elements';
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons'
 import { Divider } from 'react-native-paper';
+import { AntDesign } from '@expo/vector-icons';
 
 IconEntypo.loadFont();
 IconEvilIcons.loadFont();
 
 const pillsImage = '../../assets/pills.png';
 
-const CardInfo = ({}) => {
+const CardInfo = ({ feedback, medicine, symptoms } : { feedback: string, medicine: string, symptoms: string }) => {    
+
+    function renderIcon() {
+        let filled = feedback || medicine || symptoms;
+        if(filled) {
+            return (<AntDesign name="checkcircleo" size={20} color="#46FF33"></AntDesign>);
+        } else {
+            return (<AntDesign name="closecircleo" size={20} color="#FF0000"></AntDesign>);
+        }
+    }
+
+    function renderTitle() {
+        let filled = feedback || medicine || symptoms;
+        if(filled) {
+            return (<Text style={styles.title}>Diário registrado:</Text>);
+        } else {
+            return (<Text style={styles.title}>Sem registro.</Text>);
+        }
+    }
+
+    function renderSection(title: string, text: string) {
+        if(text) {
+            return (<Text style={styles.title}>{title}{text}.</Text>);
+        } else {
+            return null;
+        }
+    }
+
     return (
         <View style={styles.card}>
             <View style={styles.content}>
                 <View style={styles.image}>
-                    <Avatar size="medium" activeOpacity={0.7} source={require('../../assets/pills.png')} />
+                    { renderIcon() }
                 </View>
                 <View style={styles.cardContent}>
-                    <Text style={styles.title}>Nome do Medicamento</Text>
-                    <Text style={styles.description}>X mg, y capsulas</Text>
-                    <Text style={styles.description}>Descrição</Text>
-                </View>
-                <View style={styles.menu}>
-                    <IconEntypo color="#7d8597" size={20} name="dots-three-vertical"/>
-                </View>
-            </View>
-            <Divider style={styles.divider} />
-            <View style={styles.footer}>
-                <Text style={styles.schedule}>
-                    12:00PM
-                </Text>
-                <View style={styles.status}>
-                        <IconEvilIcons name="check" size={25} color="#1a936f"/>
+                    { renderTitle() }
+                    { renderSection("Você estava se sentindo ", feedback) }
+                    { renderSection("Medicamentos: ", symptoms) }
+                    { renderSection("Sintomas: ", medicine) }
                 </View>
             </View>
         </View> 
@@ -45,26 +62,30 @@ export default CardInfo;
 const styles = StyleSheet.create({
     card:{
         margin: 10,
-        height: 140,
+        //height: 100,
         backgroundColor: '#fff',
         borderRadius: 20,
         width: 350,
         alignSelf: 'center',
+        padding:15
     },
     content:{
         flexDirection: 'row',
-        flex: 2,
+        //flex: 2,
     },
     image:{
-        flex: 0.3,
+        flex: 0.2,
+        flexDirection: 'column',
         alignItems: 'center',
-        paddingTop: 15,
-        paddingLeft: 10
+        justifyContent: 'center',
+        paddingTop: 0,
+        paddingLeft: 5
     },
     cardContent:{
         flex: 1,
+        flexDirection: 'column',
         paddingLeft: 20,
-        paddingTop: 15
+        paddingTop: 0
     },
     menu:{
         flex: 0.2,
@@ -74,7 +95,6 @@ const styles = StyleSheet.create({
     title:{
         color: 'black',
         fontSize: 15,
-        paddingBottom: 3
     },
     description: {
         color: '#7d8597',

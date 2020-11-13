@@ -5,3 +5,9 @@ export default class DiaryEntry {
     medicine: string[] = [];
     availableMedicine: string[] = [];  
 };
+
+export class DiarySummary {
+    feedback:  string = "";
+    symptoms: string = "";
+    medicine: string = ""; 
+};
