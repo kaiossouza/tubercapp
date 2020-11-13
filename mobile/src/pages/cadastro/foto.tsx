@@ -7,14 +7,14 @@ import Header from './header';
 import RegisterContext from '../../contexts/register';
 import { Button } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
-import api from '../../services/api';
-import { setStatusBarNetworkActivityIndicatorVisible } from 'expo-status-bar';
 import AuthContext from '../../contexts/auth';
+import { User } from '../../models/user';
 
 export default function Foto({ navigation } : {navigation: any}) {
     const { user } = useContext(RegisterContext);
-    const { handleLogin } = useContext(AuthContext);
+    const { handleLogin, addUser } = useContext(AuthContext);
     const [ image, setImage ] = useState<any | null>(null);
+    const [ loading, setLoading ] = useState(false);
 
     function componentDidMount() {
         getPermissionAsync();
@@ -46,14 +46,32 @@ export default function Foto({ navigation } : {navigation: any}) {
         }
     };
 
-    async function registerUser() {
-        const data = new FormData();
-    
-        data.append('picture', image);
-        data.append('user', JSON.stringify(user));
-    
-        let result = await api.post('/sessions', data);
-        handleLogin(result.data.email, result.data.senha);
+    async function storeUser() {
+        try{
+            setLoading(true);
+
+            let currentUser = ({
+                ...user,
+                picture: image
+            } as User);
+
+            addUser(currentUser)
+                    .then(() => {
+                        if(user) {
+                            handleLogin(user.email, user.password);
+                        }
+
+                        setLoading(false); 
+                    })
+                    .catch((err) => {
+                        alert(err);
+                        setLoading(false); 
+                    });
+
+        } catch(err) {
+            setLoading(false); 
+            alert(err);
+        }
     }
     
     return (
@@ -64,7 +82,7 @@ export default function Foto({ navigation } : {navigation: any}) {
                 { image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require('../../../assets/logo.png')} style={styles.image} /> }   
                 <Button mode="contained" onPress={_pickImage} style={styles.button} labelStyle={styles.textButton}>Escolher foto</Button>              
             </KeyboardAvoidingView>   
-            <TouchableOpacity  onPress={registerUser}  style={styles.picFooter}>                    
+            <TouchableOpacity  onPress={storeUser}  style={styles.picFooter}>                    
                 <Text style={styles.footerText}>Finalizar</Text>
                 <AntDesign name="rightcircle" size={20} color="#82B1B6"></AntDesign>
             </TouchableOpacity>         
