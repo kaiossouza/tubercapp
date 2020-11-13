@@ -70,7 +70,7 @@ function MyTabs(props: any) {
        <NavigationContainer independent={true}>
           <Appbar.Header style={{backgroundColor:"#82B1B6"}}>
             <Appbar.Action  color="#fff" icon={require('../../assets/dots.png')} onPress={() => props.navigation.openDrawer()} />  
-            <Appbar.Content titleStyle={{color: "#fff", alignSelf: 'flex-start'}} title="TUBERC" />
+            <Appbar.Content titleStyle={{color: "#fff", alignSelf: 'flex-start'}} title="Tuberc" />
             <Appbar.Action style={{alignSelf: 'center'}} color='#fff' icon={require('../../assets/setting.png')} onPress={() => props.navigation.navigate('Settings')} />
           </Appbar.Header>
           <Tab.Navigator tabBarPosition="bottom"  tabBarOptions={{activeTintColor: '#fff', pressColor: '#47A8B2', showLabel: false, showIcon: true,
