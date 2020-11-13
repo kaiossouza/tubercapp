@@ -9,14 +9,11 @@ import { ActivityIndicator, Button } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import AuthContext from '../../contexts/auth';
 import { User } from '../../models/user';
-import { addUser, getUser } from '../../services/storage';
 
-
-export default function Foto({ navigation }: {navigation: any}) {
-    const { user, saveUser } = useContext(RegisterContext);
-    const { handleLogin } = useContext(AuthContext);
+export default function Foto({ navigation } : {navigation: any}) {
+    const { user } = useContext(RegisterContext);
+    const { handleLogin, addUser } = useContext(AuthContext);
     const [ image, setImage ] = useState<any | null>(null);
-    const [ base64, setBase64 ] = useState<string | null>("");
     const [ loading, setLoading ] = useState(false);
 
     function componentDidMount() {
@@ -56,21 +53,21 @@ export default function Foto({ navigation }: {navigation: any}) {
 
             let currentUser = ({
                 ...user,
-                picture: base64
+                picture: image
             } as User);
 
             addUser(currentUser)
-                    .then((id) => {
-                        getUser(user?.email ?? "", user?.password ?? "").then(user => {
-                            saveUser(user);
-                            setLoading(false);
+                    .then(() => {
+                        if(user) {
                             handleLogin(user.email, user.password);
-                        });
+                        }
+
+                        setLoading(false); 
                     })
                     .catch((err) => {
                         alert(err);
+                        setLoading(false); 
                     });
-
         } catch(err) {
             setLoading(false); 
             alert(err);
