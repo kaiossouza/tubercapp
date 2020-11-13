@@ -34,7 +34,7 @@ export default function Home({navigation} : { navigation: any }){
     const now = moment(new Date());
     const duration = moment.duration(now.diff(user?.treatmentStart));
     const treatmentDuration: number = user?.treatmentDuration ? user?.treatmentDuration : 0;
-    const percentDuration = parseInt(duration.days().toString()) / treatmentDuration;
+    const percentDuration = parseInt(duration.asDays().toString()) / treatmentDuration;
     const percentIntDuration = parseInt((percentDuration * 100).toString()) ;
     const imageProfile =  <Avatar size="large" rounded  containerStyle={styles.avatar} source={{ uri: user?.picture}}/>;
     const imageProfileNull = <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('./../../../assets/logo.png')}/>;
