@@ -14,11 +14,11 @@ Icon.loadFont();
 
 const {width, height} = Dimensions.get("window");
 
-const Slide = ({index, navigation}) => {
+const Slide = ({index, navigation} : {index: any, navigation: any}) => {
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
-    const slide = index === 0 ? < Feel /> : (index === 1 ? <Medicine navigation={navigation} /> : (index === 2 ? <Symptoms/> : <DiaryResume/> ));
+    const slide = index === 0 ? < Feel /> : (index === 1 ? <Medicine  /> : (index === 2 ? <Symptoms/> : <DiaryResume/> ));
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
@@ -32,42 +32,8 @@ const Slide = ({index, navigation}) => {
 
 const styles = StyleSheet.create({
     slide:{
-        width
-    },
-    container:{
-        
-    },
-    card:{
-        height: 430,
-        marginTop: 30,
-    },
-    logo:{
-        alignSelf: 'center',
-        marginTop: 20
-    },
-    divider:{
-        height: 1,
-        marginTop: 20,
-        width: 350,
-        alignSelf:'center',
-        backgroundColor: '#9c9c9c',
-    },
-    titleFeel:{
-        textAlign: 'center',
-        fontSize: 20,
-        marginTop: 10,
-    },
-    option:{
-        fontSize:15,
-        marginLeft: 60,
-        marginTop: 40,
-        fontFamily: 'Cabin_400Regular',
-        fontStyle: 'normal',
-        marginBottom: 20,
-    },
-    options:{
-        marginTop: 5,
-    },
+        width,
+    }
 });
 
 export default Slide;

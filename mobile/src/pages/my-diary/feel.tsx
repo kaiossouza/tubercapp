@@ -1,6 +1,6 @@
 
-import React, {useContext, useState} from 'react';
-import { Text, View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import React, {useState} from 'react';
+import { Text, View, StyleSheet, TouchableWithoutFeedback, Dimensions, Animated } from 'react-native';
 import { Divider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Fontisto';
 import IconFeather from 'react-native-vector-icons/Feather';
@@ -10,14 +10,14 @@ import {
     Cabin_400Regular
   } from '@expo-google-fonts/cabin';
 import { AppLoading } from 'expo';
-import AuthContext from '../../contexts/auth';
 import { getCurrentEntry, setDiary } from '../../services/storage';
 import DiaryEntry from '../../models/Diary';
 
 Icon.loadFont();
 IconFeather.loadFont();
+const {height} = Dimensions.get("window");
 
-export default function Feel({navigation}){
+export default function Feel(){
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
@@ -43,46 +43,53 @@ export default function Feel({navigation}){
     } else
         return (
             <Card containerStyle={styles.card}>
-            <Text style={styles.titleFeel}>
-                Como você está?
-            </Text>
-            <Divider style={styles.divider}/>
-            <View style={styles.options}>
-                <TouchableWithoutFeedback onPress={() => saveFeedback(1)}>
-                    <View style={styles.option}>
-                        { 
-                            feedback == 1 ? <Icon color="#DB9E06" size={35} name="slightly-smile" />  : 
-                            <Icon color="black" size={35} name="slightly-smile" /> 
-                        } 
-                        <Text style={styles.optionName}>
-                            Estou bem!
-                        </Text>
-                    </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => saveFeedback(2)}>
-                    <View style={styles.option}>
-                        { 
-                            feedback == 2 ? <Icon color="#DB9E06" size={35} name="neutral" />  : 
-                                    <Icon color="black" size={35} name="neutral" />
-                        }
-                        <Text style={styles.optionName}>
-                            Mais ou menos!
-                        </Text>
-                    </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => saveFeedback(3)}>
-                    <View  style={styles.option}>
-                        { 
-                            feedback == 3 ? <Icon color="#DB9E06" size={35} name="frowning" />  : 
-                                    <Icon color="black" size={35} name="frowning" />
-                        }
-                        <Text style={styles.optionName}>
-                            Não me sinto bem!
-                        </Text>
-                    </View>
-                </TouchableWithoutFeedback>
-            </View>
-        </Card>
+                <Animated.ScrollView
+                    contentContainerStyle={{ height: height * 0.8 }}
+                    decelerationRate="fast"
+                    bounces={false}
+                    scrollToOverflowEnabled={true}
+                    scrollEventThrottle={1}>
+                <Text style={styles.titleFeel}>
+                    Como você está?
+                </Text>
+                <Divider style={styles.divider}/>
+                <View style={styles.options}>
+                    <TouchableWithoutFeedback onPress={() => saveFeedback(1)}>
+                        <View style={styles.option}>
+                            { 
+                                feedback == 1 ? <Icon color="#DB9E06" size={35} name="slightly-smile" />  : 
+                                <Icon color="black" size={35} name="slightly-smile" /> 
+                            } 
+                            <Text style={styles.optionName}>
+                                Estou bem!
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => saveFeedback(2)}>
+                        <View style={styles.option}>
+                            { 
+                                feedback == 2 ? <Icon color="#DB9E06" size={35} name="neutral" />  : 
+                                        <Icon color="black" size={35} name="neutral" />
+                            }
+                            <Text style={styles.optionName}>
+                                Mais ou menos!
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => saveFeedback(3)}>
+                        <View  style={styles.option}>
+                            { 
+                                feedback == 3 ? <Icon color="#DB9E06" size={35} name="frowning" />  : 
+                                        <Icon color="black" size={35} name="frowning" />
+                            }
+                            <Text style={styles.optionName}>
+                                Não me sinto bem!
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+                </Animated.ScrollView>
+            </Card>
     );
 };
 
@@ -102,8 +109,7 @@ const styles = StyleSheet.create({
     },
 
      card:{
-         height: 430,
-         marginTop: 20,
+         maxHeight: height * 0.8,
          borderRadius: 20
      },
 
@@ -133,8 +139,9 @@ const styles = StyleSheet.create({
     },
     
     options:{
-        marginTop: 45,
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flex: 1,
+        marginTop: -height * 0.1
     }
 });

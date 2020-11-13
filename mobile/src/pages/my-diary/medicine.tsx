@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, View, StyleSheet, Animated } from 'react-native';
+import { Text, View, StyleSheet, Animated, Dimensions } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { moderateScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Fontisto';
@@ -12,8 +12,10 @@ import {
     Cabin_400Regular
   } from '@expo-google-fonts/cabin';
 import { AppLoading } from 'expo';
+
 Icon.loadFont();
 IconFeather.loadFont();
+const {height} = Dimensions.get("window");
 
 export default function Medicine(){
     let pillsImage = require('../../../assets/pills.png');
@@ -213,8 +215,7 @@ const styles = StyleSheet.create({
 
 
      card:{
-        height: 430,
-        marginTop: 20,
+        maxHeight : height * 0.8,
         borderRadius: 20
     },
     titleMedicine:{

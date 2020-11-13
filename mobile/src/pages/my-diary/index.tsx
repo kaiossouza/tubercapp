@@ -10,9 +10,9 @@ import { AppLoading } from 'expo';
 
 const {width, height} = Dimensions.get("window");
 const slides = [{index: 1}, {index: 2}, {index: 3}, {index: 4}];
-const WIDTH_SLIDES_TOTAL = width * slides.length;
+// const WIDTH_SLIDES_TOTAL = width * slides.length;
 
-const MyDiary = ({ navigation }) => {
+const MyDiary = ({ navigation } : {navigation:any}) => {
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
@@ -81,15 +81,18 @@ const styles = StyleSheet.create({
     screen:{
         backgroundColor:'#82B1B6',
         flex: 1,
+        justifyContent: 'center',
+        // alignItems: "center",
+        // alignSelf: "center",
+        // alignContent: "center"
     },
      pagination: {
         justifyContent: 'center',
         flexDirection: 'row',
-        marginTop: 40,
         alignContent: 'center',
      },
      card:{
-         height: 500,
+         maxHeight: height * 0.8,
          marginTop: 20,
      },
      divider2:{
@@ -109,7 +112,8 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     slider:{
-        // height: 0.70 * height,
+        height: height * 0.7,
+        flex: 1
     },
     footer:{
         flex: 1,

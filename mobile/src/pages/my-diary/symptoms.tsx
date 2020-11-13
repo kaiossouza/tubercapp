@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, View, StyleSheet, Animated } from 'react-native';
+import { Text, View, StyleSheet, Animated, Dimensions } from 'react-native';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import IconFeather from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
@@ -11,8 +11,10 @@ import {
   Cabin_400Regular
 } from '@expo-google-fonts/cabin';
 import { AppLoading } from 'expo';
+
 IconFontisto.loadFont();
 IconFeather.loadFont();
+const {height} = Dimensions.get("window");
 
 const Symptoms = () => {
     let symptomsImage = require('../../../assets/symptoms-image.png');
@@ -108,8 +110,7 @@ const styles = StyleSheet.create({
       alignItems: 'center'
   },
   card:{
-      height: 430,
-      marginTop: 20,
+      maxHeight: height * 0.8,
       borderRadius: 20
   },
   titleMedicine:{
