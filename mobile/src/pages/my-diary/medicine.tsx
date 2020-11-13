@@ -1,98 +1,323 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { Text, View, StyleSheet, Animated, Dimensions } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Divider, Modal, TextInput } from 'react-native-paper';
 import { moderateScale } from 'react-native-size-matters';
 import Icon from 'react-native-vector-icons/Fontisto';
 import IconFeather from 'react-native-vector-icons/Feather';
 import { Card, Avatar } from 'react-native-elements';
 import RadioButton from '../../components/radioButton';
-import FabButton from '../../components/fabButton';
+import { AntDesign } from '@expo/vector-icons';
 import {
     useFonts,
     Cabin_400Regular
   } from '@expo-google-fonts/cabin';
 import { AppLoading } from 'expo';
-
+import AuthContext from '../../contexts/auth';
+import DatePicker from 'react-native-datepicker';
+import { User } from '../../models/user';
+import DiaryEntry from '../../models/Diary';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { parse } from 'react-native-svg';
 Icon.loadFont();
 IconFeather.loadFont();
 const {height} = Dimensions.get("window");
 
-export default function Medicine(){
-    let pillsImage = require('../../../assets/pills.png');
+export default function Medicine() {
+    const { user, updateUser } = useContext(AuthContext);
+    const [loading, setLoading] = useState(true);
+    const [date, setDate] = useState(new Date());
+    const [medicine, setMedicine] = useState<string>("[]");
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [availableMedicine, setAvailableMedicine] = useState<string>("[]");
+    const [medicineInput, setMedicineInput] = useState<string>("");
 
     let [fontsLoaded] = useFonts({
         Cabin_400Regular,
     });
-    var listCheckResult: any[] = [];
     
-    var medicines = [{
-        name: "Etambutol "
-      },
-      {
-        name: "Isoniazida "
-      },
-      {
-        name: "Etionamida "
-      },
-      {
-        name: "Isoniazida "
-      },
-      {
-        name: "Pirazinamida "
-      },
-      {
-        name: "Isoniazida "
-      },
-      {
-        name: "Isoniazida "
-      },];
-       
-    medicines.map((medicine, index) => (
-        listCheckResult.push( { state: useState(false) })
-    ));
-    if (!fontsLoaded) {
+    //var fixedMedicines = [ "Etambutol (Dose 1)", "Isoniazida (Dose 1)", "Etionamida (Dose 1)" ];
+
+    function saveMedicine(m: string) {
+        let medicineList = JSON.parse(medicine) as string[];
+        if(medicineList.includes(m)){
+          let filteredMedicine = medicineList.filter(s => s != m);
+          setMedicine(JSON.stringify(filteredMedicine));
+        } else {
+          let filteredMedicine = medicineList;
+          filteredMedicine.push(m);
+          setMedicine(JSON.stringify(filteredMedicine));
+        }
+    }
+
+    function changeDate(date: any) {
+        let selectedDate = new Date(`${date.split('/')[1]}/${date.split('/')[0]}/${date.split('/')[2]}`);  
+
+        let userFromStorage = { ...user } as User;
+        let entry = userFromStorage.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            if(eDate.toISOString) { 
+                return eDate.toISOString().split('T')[0] == selectedDate.toISOString().split('T')[0];
+            } else {
+                return false;
+            }
+        });
+        
+        var parsedAvailableMedicine = JSON.parse(availableMedicine ?? "[]") as string[];
+        if(entry.length > 0) {
+            setMedicine(JSON.stringify(entry[0].medicine));
+            if(entry[0].availableMedicine) {
+                setAvailableMedicine(JSON.stringify(entry[0].availableMedicine));
+                updateAvailableMedicine(entry[0].availableMedicine);
+            } else {                
+                updateAvailableMedicine(parsedAvailableMedicine);
+            }
+            setDate(selectedDate); 
+        } else { 
+            updateAvailableMedicine(parsedAvailableMedicine);
+            setMedicine("[]");
+            setDate(selectedDate); 
+        }           
+    };
+
+    function updateMedicine(medicine: string) {
+        if(date) {
+          setLoading(true);
+          let userFromStorage = { ...user } as User;
+          let entriesForSelectedDate = userFromStorage.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
+          });
+  
+          let entry = new DiaryEntry();
+            
+          if(entriesForSelectedDate.length > 0) {
+            entry = entriesForSelectedDate[0];
+          } else {
+            entry.date = date;
+          }
+  
+          if(entry.medicine.includes(medicine)){
+            entry.medicine = entry.medicine.filter(s => s != medicine);
+          } else {
+            entry.medicine.push(medicine);
+          }
+  
+          let remainingEntries = userFromStorage.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            return eDate.toISOString().split('T')[0] != date.toISOString().split('T')[0];
+          });
+  
+          if(remainingEntries.length > 0) {
+            remainingEntries.push(entry);
+          } else {
+            remainingEntries = [ entry ];
+          }
+  
+          userFromStorage.diary = remainingEntries;
+  
+          updateUser(userFromStorage).then(() => {
+            saveMedicine(medicine);
+            setLoading(false);
+          });
+        }
+      }
+
+    if(loading) {
+        if(!user?.diary) {
+            let userFromStorage = { ...user } as User;
+            userFromStorage.diary = [ new DiaryEntry() ];
+            updateUser(userFromStorage).then(() => {
+                setLoading(false);
+            });
+        } else {
+            let userFromStorage = { ...user } as User;
+            
+            let entry = userFromStorage.diary.filter((e) => {
+                let eDate = new Date(e.date.toString());
+                if(eDate.toISOString) {                
+                    return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
+                } else {
+                    return false;
+                }
+            });
+            
+            if(entry.length > 0) {
+                setMedicine(JSON.stringify(entry[0].medicine));
+                if(entry[0].availableMedicine) {
+                    setAvailableMedicine(JSON.stringify(entry[0].availableMedicine));
+                }
+            } else { 
+                setMedicine("[]");
+                //setAvailableMedicine("[]");
+            }
+            setLoading(false);
+        }
+    }
+
+    function openEdition() {
+        setModalVisible(!modalVisible);
+    }
+
+    function createMedicine() {
+        var parsedAvailableMedicine = JSON.parse(availableMedicine ?? "[]") as string[];
+        parsedAvailableMedicine.push(medicineInput);
+        updateAvailableMedicine(parsedAvailableMedicine);
+    }
+
+    function deleteMedicine(medicine: string) {
+        var parsedAvailableMedicine = JSON.parse(availableMedicine ?? "[]") as string[];
+        updateAvailableMedicine(parsedAvailableMedicine.filter(m => m != medicine));
+    }
+
+    function updateAvailableMedicine(availableMedicine: string[]) {
+        if(date) {
+          setLoading(true);
+          let userFromStorage = { ...user } as User;
+          let entriesForSelectedDate = userFromStorage.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
+          });
+  
+          let entry = new DiaryEntry();
+            
+          if(entriesForSelectedDate.length > 0) {
+            entry = entriesForSelectedDate[0];
+          } else {
+            entry.date = date;
+          }
+  
+          entry.availableMedicine = availableMedicine;
+  
+          let remainingEntries = userFromStorage.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            return eDate.toISOString().split('T')[0] != date.toISOString().split('T')[0];
+          });
+  
+          if(remainingEntries.length > 0) {
+            remainingEntries.push(entry);
+          } else {
+            remainingEntries = [ entry ];
+          }
+  
+          userFromStorage.diary = remainingEntries;
+  
+          updateUser(userFromStorage).then(() => {
+              //alert(JSON.stringify(availableMedicine));
+            setAvailableMedicine(JSON.stringify(availableMedicine));
+            setLoading(false);
+          });
+        }
+      }
+    
+    if (!fontsLoaded || loading) {
         return <AppLoading />;
     } else {
-        return (
-            <Card containerStyle={styles.card}>
-                <Animated.ScrollView
-                decelerationRate="fast"
-                bounces={false}
-                scrollToOverflowEnabled={true}
-                scrollEventThrottle={1}>
-                <View style={styles.medicineTitleContent}>
-                <Text style={styles.titleMedicine}>
-                    Medicamentos
-                </Text>
-                <FabButton 
-                    style={{ fontSize: 5, left: 75, top: 5}} 
-                />
-                </View>
-                <Divider style={styles.divider}/>
-                    {
-                        medicines.map((medicine, index) => {
-                            let result = () => {listCheckResult[index].state[0] ? listCheckResult[index].state[1](false) : listCheckResult[index].state[1](true)};
-                            return(
-                                <View style={styles.option}>
-                                    <RadioButton checked={listCheckResult[index].state[0]} onPress={result}/>
-                                    <View style={styles.medicineInfo}>
-                                        <Text style={styles.optionName}>{medicine.name}</Text>
-                                        <Text style={styles.optionDescription}>X mg, y pílulas</Text>
-                                    </View>
-                                    <View style={styles.image}>
-                                        <Avatar size="small" activeOpacity={0.7} source={pillsImage} />
-                                    </View>
-                                </View>
-                            )
-                        })
-                    }
-                </Animated.ScrollView>
-            </Card>
-        );
+        if(!modalVisible) {
+            return (
+                <View>
+                    <Card containerStyle={styles.card}>                    
+                        <Animated.ScrollView
+                            decelerationRate="fast"
+                            bounces={false}
+                            scrollToOverflowEnabled={true}
+                            scrollEventThrottle={1}>
+                        <View style={styles.medicineTitleContent}>
+                            <Text style={styles.titleMedicine}>
+                                Medicamentos
+                            </Text>       
+                            <TouchableOpacity onPress={() => openEdition()}>
+                                <AntDesign name="edit" size={20} color="#82B1B6"></AntDesign>
+                            </TouchableOpacity>       
+                        </View>                        
+                        <Divider style={styles.divider}/>
+                        <DatePicker 
+                            format="DD/MM/YYYY"
+                            style={styles.dateComponent}
+                            date={date}
+                            onDateChange={changeDate}
+                            locale={'pt-BR'}
+                            confirmBtnText="OK"
+                            cancelBtnText="Cancelar"
+                        />  
+                            {
+                                (JSON.parse(availableMedicine ?? "[]") as string[]).map((m) => {
+                                    let medicineList = JSON.parse(medicine) as string[];
+                                    let checked = medicineList.includes(m);    
+                                    return(
+                                        <View style={styles.option}>
+                                            <RadioButton checked={checked} onPress={() => updateMedicine(m)}/>
+                                            <View style={styles.medicineInfo}>
+                                                <Text style={styles.optionName}>{m}</Text>
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </Animated.ScrollView>
+                    </Card>
+                </View>);
+        } else {
+            return (
+                <View>
+                    <Card containerStyle={styles.card}>                    
+                        <Animated.ScrollView
+                            decelerationRate="fast"
+                            bounces={false}
+                            scrollToOverflowEnabled={true}
+                            scrollEventThrottle={1}>
+                        <View style={styles.medicineTitleContent}>
+                            <Text style={styles.titleMedicine}>
+                                Medicamentos
+                            </Text>  
+                            <TouchableOpacity onPress={() => openEdition()}>
+                                <AntDesign name="checkcircleo" size={20} color="#82B1B6"></AntDesign>
+                            </TouchableOpacity>                          
+                        </View>
+                        <Divider style={styles.divider}/>
+                        <DatePicker 
+                            format="DD/MM/YYYY"
+                            style={styles.dateComponent}
+                            date={date}
+                            onDateChange={changeDate}
+                            locale={'pt-BR'}
+                            confirmBtnText="OK"
+                            cancelBtnText="Cancelar"
+                        />  
+                            {
+                                (JSON.parse(availableMedicine ?? "[]") as string[]).map((m) => {
+                                    let medicineList = JSON.parse(medicine) as string[];
+                                    let checked = medicineList.includes(m);    
+                                    return(
+                                        <View style={styles.editOption}>
+                                            <View style={styles.medicineInfo}>
+                                                <Text style={styles.optionName}>{m}</Text>
+                                            </View>
+                                            <TouchableOpacity onPress={() => deleteMedicine(m)} style={{paddingLeft: 20}}>
+                                                <AntDesign name="delete" size={20} color="#FF0000"></AntDesign>
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                })
+                            }
+                            <View style={styles.editOption}>
+                                <TextInput style={styles.medicineInfo} onChangeText={setMedicineInput}></TextInput>  
+                                <TouchableOpacity onPress={() => createMedicine()}>
+                                    <AntDesign name="pluscircleo" size={20} color="#82B1B6" style={{paddingLeft: 30}}></AntDesign>
+                                </TouchableOpacity> 
+                            </View>
+                        </Animated.ScrollView>
+                    </Card>
+                </View>);
+        }
     }
 };
 
 const styles = StyleSheet.create({
+    dateComponent: {
+        width: 350
+    },
+    
     divider:{
         height: 3,
         marginBottom: 20,
@@ -135,6 +360,13 @@ const styles = StyleSheet.create({
     },
     option:{
         marginLeft: 20,
+        marginTop: 15,
+        marginBottom: 15,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    editOption:{
+        paddingEnd: 20,
         marginTop: 15,
         marginBottom: 15,
         flexDirection: 'row',
@@ -219,6 +451,7 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
     titleMedicine:{
+        flex: 2,
         textAlign: 'center',
         alignSelf: 'center',
         justifyContent: 'center',
@@ -236,6 +469,7 @@ const styles = StyleSheet.create({
         fontSize: 19,
     },
     medicineTitleContent:{
+        flex: 1,
         flexDirection:'row', 
         alignSelf: 'center',
         textAlign: 'center',
@@ -245,6 +479,7 @@ const styles = StyleSheet.create({
     medicineInfo:{
         flex: 1,
         paddingLeft: 20,
+        backgroundColor: '#FFF'
     },
     optionDescription:{
         color: '#7d8597'

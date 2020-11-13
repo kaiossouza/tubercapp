@@ -20,7 +20,6 @@ export const AuthProvider: React.FC = ({children}) => {
     const [signed, setSigned] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
-    const [screenTitle, setscreenTitle] = useState("Tuberc");
     
     async function addUser(user: User) {
         var res = await DB.addUser(user);
