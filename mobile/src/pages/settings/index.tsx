@@ -227,14 +227,13 @@ export default function Settings({navigation} : {navigation: any}){
                         flexDirection:'column',
                     }}>
                         <Picker
-                            selectedValue={gender}
+                            selectedValue={gender?.toString()}
                             onValueChange={(itemValue, itemIndex) => {
-                            changeGenderInput(itemIndex + 1);
-                        }}>
-                            <Picker.Item label="Masculino" value="1" />
-                            <Picker.Item label="Feminino" value="2" />
-                            <Picker.Item label="Outros" value="3" />
-                            <Picker.Item label="Não informar" value="4" />
+                            changeGenderInput(itemIndex + 1); }}>
+                                <Picker.Item label="Masculino" value="1" />
+                                <Picker.Item label="Feminino" value="2" />
+                                <Picker.Item label="Outros" value="3" />
+                                <Picker.Item label="Não informar" value="4" />
                         </Picker>
                     </View>
                 </View>
