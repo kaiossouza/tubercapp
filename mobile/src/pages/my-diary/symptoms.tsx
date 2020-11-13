@@ -5,7 +5,6 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import { Divider } from 'react-native-paper';
 import { Card, Avatar, CheckBox } from 'react-native-elements';
 import RadioButton from '../../components/radioButton';
-import FabButton from '../../components/fabButton';
 import {
   useFonts,
   Cabin_400Regular

@@ -20,7 +20,7 @@ Icon.loadFont();
 IconFeather.loadFont();
 const {height} = Dimensions.get("window");
 
-export default function Feel({ navigation } : { navigation: any }){
+export default function Feel(){
     const { user, updateUser } = useContext(AuthContext);
     const [date, setDate] = useState(new Date());
     const [loading, setLoading] = useState(true);
