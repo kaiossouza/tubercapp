@@ -17,6 +17,7 @@ import AuthContext from '../contexts/auth';
 import Exames from '../pages/exames/index';
 import MinhaClinica from '../pages/clinica/index';
 import Duvidas from '../pages/duvidas/index';
+import Relatorio from '../pages/relatorio/index'
 
 IconFontisto.loadFont();
 IconFoundation.loadFont();
@@ -30,7 +31,7 @@ function CustomDrawerContent({ props, navigation } : { props: any, navigation: a
     return (
       <DrawerContentScrollView {...props} style={{flex: 1}}>
         <DrawerItem style={styles.drawerStyle} icon={() => (<IconFontisto name="close-a" size={20} color="#adb5bd"/>)} label="" onPress={() => navigation.closeDrawer()} />
-        <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={13}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => {navigation.navigate("Home")}}/>
+        <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={13}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => {navigation.navigate("Relatorio")}}/>
         <DrawerItem icon={() => (<IconFontisto name="heart-alt" size={15}/>)} labelStyle={{fontSize: 20}} label="Exames" onPress={() => {navigation.navigate('Exames')}}/>
         <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Minha Clínica" onPress={() => {navigation.navigate('MinhaClinica')}}/>
         <DrawerItem icon={() => (<IconEntypo name="help" size={20}/>)} labelStyle={{fontSize: 20}} label="Dúvidas" onPress={() => {navigation.navigate('Duvidas')}}/>
@@ -56,6 +57,7 @@ function CustomDrawerContent({ props, navigation } : { props: any, navigation: a
                     <Drawer.Screen name="Exames" component={Exames}/>
                     <Drawer.Screen name="MinhaClinica" component={MinhaClinica}/>
                     <Drawer.Screen name="Duvidas" component={Duvidas}/>
+                    <Drawer.Screen name="Relatorio" component={Relatorio}/>
             </Drawer.Navigator>
         </NavigationContainer>
     );
