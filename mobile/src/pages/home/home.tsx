@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import { Text, View, Image } from 'react-native';
+import React, {useState, useContext} from 'react';
+import { Text, View, Image, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import { Avatar } from 'react-native-elements';
@@ -19,15 +19,6 @@ IconEvilIcons.loadFont();
 Icon.loadFont();
 IconFontisto.loadFont();
 
-const assets = new tubercAssets('../../../assets/');
-const pillsImage = assets.pills;
-const setBottom = assets.setBottom;
-const yuri = assets.yuri;
-const thinkingImage = assets.thinkingImage;
-const medicineImage = assets.medicineImage;
-const symptonsImage = assets.symptonsImage;
-const tuberculose = assets.tuberculose;
-
 export default function Home({navigation} : { navigation: any }){    
     const { user } = useContext(AuthContext);
     const firstNameTrim = user ? user.name.substring(0, user.name.indexOf(" ")) : null;
@@ -39,12 +30,54 @@ export default function Home({navigation} : { navigation: any }){
     const percentIntDuration = parseInt((percentDuration * 100).toString()) ;
     const imageProfile =  <Avatar size="large" rounded  containerStyle={styles.avatar} source={{ uri: user?.picture}}/>;
     const imageProfileNull = <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('./../../../assets/logo.png')}/>;
+
+    function resultFillDiary(){
+        let date = new Date();
+        let entry = user?.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            if(eDate.toISOString) {                
+                return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
+            } else {
+                return false;
+            }
+        }) ?? [];
+
+        const feelImage =  <Avatar size="small" rounded  containerStyle={styles.avatar}  source={require('./../../../assets/thinking-image.png')}/>;
+        const medicineImage =  <Avatar size="small" rounded  containerStyle={styles.avatar} source={require('./../../../assets/medicine-image.png')}/>;
+        const sympthonImage =  <Avatar size="small" rounded  containerStyle={styles.avatar} source={ require('../../../assets/symptoms-image.png')}/>;    
+        const feelImageGray =  <Avatar size="small" rounded  containerStyle={styles.avatar}  source={require('./../../../assets/thinking-image-gray.png')}/>;
+        const medicineImageGray =  <Avatar size="small" rounded  containerStyle={styles.avatar} source={require('./../../../assets/medicine-image-gray.png')}/>;
+        const sympthonImageGray =  <Avatar size="small" rounded  containerStyle={styles.avatar} source={ require('./../../../assets/sympthoms-image-gray.png')}/>;    
+    
+        var hasFeel: boolean = entry[0].feedback > 0;
+        var hasMedicine: boolean = entry[0].medicine.length > 0;
+        var hasSympthoms: boolean = entry[0].simptoms.length > 0;
+
+        var resultDiary = 0;
+        if(hasFeel) resultDiary++;
+        if(hasMedicine) resultDiary++;
+        if(hasSympthoms) resultDiary++;
+
+        return (
+            <>
+                <View style={styles.imagesDiary}>
+                    {hasFeel ? feelImage : feelImageGray}
+                    {hasMedicine ? medicineImage : medicineImageGray}
+                    {hasSympthoms ? sympthonImage : sympthonImageGray} 
+                </View>
+                <View style={styles.cardContentDiary}>
+                    <Text style={styles.title}>{resultDiary}/3</Text>
+                    <Text style={styles.descriptionDiary}>PREENCHIDOS</Text>
+                </View>
+            </>
+        )
+    }
     
     function feeling(feedback: number) {
         if(feedback == 1){
             return (
                 <View style={styles.cardContent}>
-                    <Image style={styles.smallLogo} source={require('../../../assets/happy.png')}></Image>
+                    <Image style={styles.smallImage} source={require('../../../assets/happy.png')}></Image>
                     <Text style={styles.commentBlack} >Você está se sentindo bem!</Text>
                 </View>);
         } else if(feedback == 2) {
@@ -66,14 +99,16 @@ export default function Home({navigation} : { navigation: any }){
         if(symptoms.length > 0){
             return (
                 <View style={styles.cardContentRow}>
-                    <Text style={styles.commentBlackBold} >Sintomas: </Text>
-                    <Text style={styles.commentBlackBold} >{symptoms.join(", ")}.</Text>
+                    <Text style={styles.commentBlackBold} >Sintomas</Text>
+                    <View style={styles.resultContent}>
+                        <Text style={styles.commentResultList} >{symptoms.join(", ")}.</Text>
+                    </View>
                 </View>);
         } else {
             return (
                 <View style={styles.cardContentRow}>
-                    <Text style={styles.commentBlackBold} >Sintomas: </Text>
-                    <Text style={styles.commentBlackBold} >nenhum registrado.</Text>
+                    <Text style={styles.commentBlackBold} >Sintomas</Text>
+                    <Text style={styles.commentResult} >Nenhum registrado.</Text>
                 </View>);
         }
     }
@@ -82,14 +117,16 @@ export default function Home({navigation} : { navigation: any }){
         if(medicine.length > 0){
             return (
                 <View style={styles.cardContentRow}>
-                    <Text style={styles.commentBlackBold} >Medicamentos: </Text>
-                    <Text style={styles.commentBlackBold} >{medicine.join(", ")}.</Text>
+                    <Text style={styles.commentBlackBold} >Medicamentos</Text>
+                    <View style={styles.resultContent}>
+                        <Text style={styles.commentResultList} >{medicine.join(", ")}.</Text>
+                    </View>
                 </View>);
         } else {
             return (
                 <View style={styles.cardContentRow}>
-                    <Text style={styles.commentBlackBold} >Medicamentos: </Text>
-                    <Text style={styles.commentBlackBold} >ainda não preenchido.</Text>
+                    <Text style={styles.commentBlackBold} >Medicamentos</Text>
+                    <Text style={styles.commentResult} >Ainda não preenchido.</Text>
                 </View>);
         }
     }
@@ -110,16 +147,18 @@ export default function Home({navigation} : { navigation: any }){
         var filled = entry.length > 0 && checkIfFilled(entry[0]);
 
         if(filled) {
-            return (<View>
-                <View style={styles.cards}>
-                    <Text style={styles.dateTitle}>Seu resumo de hoje, {formattedDate}</Text>
-                    <View style={styles.card}>
+            return (
+                <View>
+                    <Text style={styles.dateTitleFeeling}>Seu resumo de hoje, {formattedDate}</Text>
+                    <View style={{flex: 1, width: "100%", marginBottom: 20}}>
                         { feeling(entry[0].feedback) }
+                        <Divider style={styles.subDivider} />
                         { symptoms(entry[0].simptoms) }
+                         <Divider style={styles.subDivider} />
                         { medicine(entry[0].medicine) }
                     </View>                     
                 </View>
-            </View>);
+            );
         } else {
             return (
                 <View style={styles.cards}>
@@ -140,7 +179,17 @@ export default function Home({navigation} : { navigation: any }){
             <View>
               <Progress done={percentIntDuration}/>
             </View>
-            { resume() }
+            <View style={styles.card}>
+                <View style={styles.contentDiary}>
+                    {resultFillDiary()}
+                </View>
+                <Divider style={styles.divider} />
+                <View style={styles.footer}>
+                    
+                    { resume() }
+
+                </View>
+              </View> 
         </ScrollView>
     );
 };

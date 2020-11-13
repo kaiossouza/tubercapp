@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
     avatar:{
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: 10
     },
     logo:{
       width:300,
@@ -14,6 +14,11 @@ export const styles = StyleSheet.create({
       width:150,
       height:150,
       marginBottom:10
+    },
+    smallImage:{
+      width:150,
+      height:150,
+      marginBottom:5
     },
     appName:{
       alignSelf:'center',
@@ -41,7 +46,7 @@ export const styles = StyleSheet.create({
     },
     card:{
       margin: 10,
-      height: 110,
+      height: "auto",
       backgroundColor: '#fff',
       borderRadius: 20,
       width: 350,
@@ -55,11 +60,12 @@ export const styles = StyleSheet.create({
     },
     contentDiary:{
       flexDirection: 'row',
-      flex: 2,
+      flex: 1,
       alignContent: 'center',
       alignSelf: 'center',
-      justifyContent: 'center',
-      marginLeft: 30
+      justifyContent: "space-between",
+      alignItems: "center",
+      width: "80%"
     },
     image:{
         flex: 0.3,
@@ -75,16 +81,21 @@ export const styles = StyleSheet.create({
     },
     imagesDiary:{
       flexDirection: 'row',
+      justifyContent: "space-between",
+      flex: 1
     },
     cardContent:{
         flex: 1,
         flexDirection: 'column',
         alignContent: 'center',
         justifyContent: 'center',
+        alignItems: "center"
     },
     cardContentRow:{
       flex: 1,
-      flexDirection: 'row',
+      flexDirection: 'column',
+      width: "100%",
+      alignSelf: "center"
   },
     cardContentMedicine:{
       flex: 1,
@@ -93,8 +104,8 @@ export const styles = StyleSheet.create({
     },
     cardContentDiary:{
       flex: 1,
-      paddingLeft: 20,
-      paddingTop: 20
+      paddingTop: 20,
+      alignItems: "flex-end"
     },
     menu:{
         flex: 0.2,
@@ -105,8 +116,15 @@ export const styles = StyleSheet.create({
       color: 'white',
       fontSize: 15,
       paddingBottom: 3,
-      //paddingLeft: 30,
       fontWeight: 'bold'
+    },
+    dateTitleFeeling:{
+      color: 'black',
+      fontSize: 15,
+      paddingBottom: 3,
+      paddingTop: 10,
+      flex: 1,
+      textAlign: "center",
     },
     comment:{
       color: 'white',
@@ -130,11 +148,30 @@ export const styles = StyleSheet.create({
       color: 'black',
       fontSize: 15,
       paddingBottom: 3,
-      alignContent: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      width: '80%',
-      fontWeight: 'bold'
+      flex: 1,
+      fontWeight: 'bold',
+      alignSelf: "center"
+
+    },
+    commentResult:{
+      color: 'black',
+      fontSize: 13,
+      paddingBottom: 3,
+      flex: 1,
+      alignSelf: "center",
+    },
+    commentResultList: {
+      color: 'black',
+      fontSize: 13,
+      paddingBottom: 3,
+      flex: 1,
+      alignSelf: "center",
+      textAlign: "center"
+    },
+    resultContent:{
+      width: "80%",
+      flex: 1, 
+      alignSelf: "center"
     },
     title:{
         color: 'black',
@@ -165,14 +202,21 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         opacity: 0.5
     },
+    subDivider:{
+      height: 3,
+      width: '100%',
+      alignSelf: 'center',
+      marginTop: 5,
+      opacity: 0.5
+    },
     footer:{
         flexDirection: 'row',
         flex: 1,
-        width: 350,
+        width: "100%",
         alignSelf: 'center',
         alignItems: 'center',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     schedule: {
         color: '#7d8597',
