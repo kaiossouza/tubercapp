@@ -12,6 +12,7 @@ import { styles } from './styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import AuthContext from './../../contexts/auth';
 import moment from 'moment';
+import { checkIfFilled } from '../../models/Diary';
 
 IconEntypo.loadFont();
 IconEvilIcons.loadFont();
@@ -38,6 +39,97 @@ export default function Home({navigation} : { navigation: any }){
     const percentIntDuration = parseInt((percentDuration * 100).toString()) ;
     const imageProfile =  <Avatar size="large" rounded  containerStyle={styles.avatar} source={{ uri: user?.picture}}/>;
     const imageProfileNull = <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('./../../../assets/logo.png')}/>;
+    
+    function feeling(feedback: number) {
+        if(feedback == 1){
+            return (
+                <View style={styles.cardContent}>
+                    <Image style={styles.smallLogo} source={require('../../../assets/happy.png')}></Image>
+                    <Text style={styles.commentBlack} >Você está se sentindo bem!</Text>
+                </View>);
+        } else if(feedback == 2) {
+            return (
+                <View style={styles.cardContent}>
+                    <Image style={styles.smallLogo} source={require('../../../assets/sad.png')}></Image>
+                    <Text style={styles.commentBlack} >Você não está se sentindo muito bem.</Text>
+                </View>);
+        } else {
+            return (
+                <View style={styles.cardContent}>
+                    <Image style={styles.smallLogo} source={require('../../../assets/blue.png')}></Image>
+                    <Text style={styles.commentBlack} >Você não está bem. Que tal ligar para o seu médico?</Text>
+                </View>);
+        }
+    }
+
+    function symptoms(symptoms: string[]) {
+        if(symptoms.length > 0){
+            return (
+                <View style={styles.cardContentRow}>
+                    <Text style={styles.commentBlackBold} >Sintomas: </Text>
+                    <Text style={styles.commentBlackBold} >{symptoms.join(", ")}.</Text>
+                </View>);
+        } else {
+            return (
+                <View style={styles.cardContentRow}>
+                    <Text style={styles.commentBlackBold} >Sintomas: </Text>
+                    <Text style={styles.commentBlackBold} >nenhum registrado.</Text>
+                </View>);
+        }
+    }
+
+    function medicine(medicine: string[]) {
+        if(medicine.length > 0){
+            return (
+                <View style={styles.cardContentRow}>
+                    <Text style={styles.commentBlackBold} >Medicamentos: </Text>
+                    <Text style={styles.commentBlackBold} >{medicine.join(", ")}.</Text>
+                </View>);
+        } else {
+            return (
+                <View style={styles.cardContentRow}>
+                    <Text style={styles.commentBlackBold} >Medicamentos: </Text>
+                    <Text style={styles.commentBlackBold} >ainda não preenchido.</Text>
+                </View>);
+        }
+    }
+
+    function resume() {
+        let date = new Date();
+        let entry = user?.diary.filter((e) => {
+            let eDate = new Date(e.date.toString());
+            if(eDate.toISOString) {                
+                return eDate.toISOString().split('T')[0] == date.toISOString().split('T')[0];
+            } else {
+                return false;
+            }
+        }) ?? [];
+
+        let dateStr = date.toISOString().split('T')[0];
+        let formattedDate = `${dateStr.split('-')[2]}/${dateStr.split('-')[1]}/${dateStr.split('-')[0]}`;
+        var filled = entry.length > 0 && checkIfFilled(entry[0]);
+
+        if(filled) {
+            return (<View>
+                <View style={styles.cards}>
+                    <Text style={styles.dateTitle}>Seu resumo de hoje, {formattedDate}</Text>
+                    <View style={styles.card}>
+                        { feeling(entry[0].feedback) }
+                        { symptoms(entry[0].simptoms) }
+                        { medicine(entry[0].medicine) }
+                    </View>                     
+                </View>
+            </View>);
+        } else {
+            return (
+                <View style={styles.cards}>
+                    <Text style={styles.dateTitle}>Seu resumo de hoje, {date.toDateString()}</Text>
+                    <Image style={styles.logo} source={require('../../../assets/hander-pana.png')}></Image>
+                    <Text style={styles.comment} >Você ainda não preencheu nada hoje, corre lá no seu diário!</Text>
+                </View>);
+        }
+    } 
+    
     return (
         <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
             <View style={styles.infoUser}>
@@ -48,72 +140,7 @@ export default function Home({navigation} : { navigation: any }){
             <View>
               <Progress done={percentIntDuration}/>
             </View>
-
-            <View style={styles.cards}>
-
-              <View style={styles.card}>
-                <View style={styles.contentDiary}>
-                    <View style={styles.imagesDiary}>
-                        <Avatar containerStyle={{marginHorizontal: 12, marginVertical: 20}} size="small" activeOpacity={0.7} source={require('../../../assets/thinking-image.png')} />
-                        <Avatar containerStyle={{marginHorizontal: 12, marginVertical: 20}} size="small" activeOpacity={0.7} source={require('../../../assets/medicine-image.png')} />
-                        <Avatar containerStyle={{marginHorizontal: 12, marginVertical: 20}} size="small"  avatarStyle={{tintColor: '#A9A9A9', opacity: 0.7}} source={require('../../../assets/symptoms-image.png')} />
-                    </View>
-                    <View style={styles.cardContentDiary}>
-                        <Text style={styles.title}>2/3</Text>
-                        <Text style={styles.descriptionDiary}>PREENCHIDOS</Text>
-                    </View>
-                </View>
-                <Divider style={styles.divider} />
-                <View style={styles.footer}>
-                    <Text style={styles.schedule}>
-                        MEU DIÁRIO
-                    </Text>
-                    <View style={styles.status}>
-                            <IconEvilIcons name="close-o" size={25} color="red"/>
-                    </View>
-                </View>
-              </View> 
-
-              <View style={styles.card}>
-                <View style={styles.content}>
-                    <View style={styles.image}>
-                        <Avatar size="medium" activeOpacity={0.7} source={require('../../../assets/pills.png')} />
-                    </View>
-                    <View style={styles.cardContentMedicine}>
-                        <Text style={styles.title}>Nome do Medicamento</Text>
-                        <Text style={styles.description}>X mg, y capsulas</Text>
-                    </View>
-                    <View style={styles.menu}>
-                        <Icon color="#7d8597" size={20} name="bell"/>
-                    </View>
-                </View>
-                <Divider style={styles.divider} />
-                <View style={styles.footer}>
-                    <Text style={styles.scheduleMedicine}>
-                        PRÓXIMO MEDICAMENTO
-                    </Text>
-                    <View style={styles.statusMedicine}>
-                            <IconEvilIcons name="clock" size={25}/>
-                            <Text>19:00</Text>
-                    </View>
-                </View>
-              </View> 
-
-              <View style={styles.card}>
-                <View style={styles.content}>
-                    <View style={styles.imageNews}>
-                        <Avatar size="large" activeOpacity={0.7} avatarStyle={{borderRadius: 10}} source={require('../../../assets/tuberculose.jpg')} />
-                    </View>
-                    <View style={styles.cardContent}>
-                        <Text style={styles.titleNews}>Pesquisas buscam novas técnicas de diagnóstico e investigam causas da tuberculose resistente ...</Text>
-                        <Text style={styles.descriptionNews}>saiba mais</Text>
-                    </View>
-                    <View style={styles.menu}>
-                        <IconEntypo color="#7d8597" size={20} name="dots-three-vertical"/>
-                    </View>
-                </View>
-              </View> 
-            </View>
+            { resume() }
         </ScrollView>
     );
 };
