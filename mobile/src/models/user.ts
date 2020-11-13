@@ -13,5 +13,7 @@ export interface User extends Document {
     picture: string,
     treatmentStart: Date,
     treatmentDuration: number,
-    diary: DiaryEntry[]
+    diary: DiaryEntry[],
+    emailGodFather: string
 };
+

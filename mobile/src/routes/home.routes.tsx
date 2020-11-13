@@ -4,6 +4,7 @@ import { createDrawerNavigator,  DrawerContentScrollView, DrawerItem } from '@re
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import IconFoundation from 'react-native-vector-icons/Foundation';
+import IconEntypo from 'react-native-vector-icons/Entypo';
 import { NavigationContainer } from '@react-navigation/native';
 import { Appbar} from 'react-native-paper';
 
@@ -13,23 +14,28 @@ import MyDiaryRoute from './mydiary.routes';
 import Settings from '../pages/settings/index';
 import News from '../pages/news';
 import AuthContext from '../contexts/auth';
+import Exames from '../pages/exames/index';
+import MinhaClinica from '../pages/clinica/index';
+import Duvidas from '../pages/duvidas/index';
 
 IconFontisto.loadFont();
 IconFoundation.loadFont();
+IconEntypo.loadFont();
 
 const Drawer = createDrawerNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function CustomDrawerContent({ props } : { props: any }) {
+function CustomDrawerContent({ props, navigation } : { props: any, navigation: any }) {
     const { handleLogout } = useContext(AuthContext);
     return (
       <DrawerContentScrollView {...props} style={{flex: 1}}>
-        <DrawerItem style={styles.drawerStyle} icon={() => (<IconFontisto name="close-a" size={20} color="#adb5bd"/>)} label="" onPress={() => props.navigation.closeDrawer()} />
-        <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={20}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => props.navigation.navigate("Home")}/>
-        <DrawerItem icon={() => (<IconFontisto name="heart-alt" size={20}/>)} labelStyle={{fontSize: 20}} label="Exames" onPress={() => props.navigation.navigate("Home")}/>
-        <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Minha Clínica" onPress={() => props.navigation.navigate("Home")}/>
+        <DrawerItem style={styles.drawerStyle} icon={() => (<IconFontisto name="close-a" size={20} color="#adb5bd"/>)} label="" onPress={() => navigation.closeDrawer()} />
+        <DrawerItem icon={() => (<IconFontisto name="bar-chart" size={13}/>)} labelStyle={{fontSize: 20}} label="Relatório" onPress={() => {navigation.navigate("Home")}}/>
+        <DrawerItem icon={() => (<IconFontisto name="heart-alt" size={15}/>)} labelStyle={{fontSize: 20}} label="Exames" onPress={() => {navigation.navigate('Exames')}}/>
+        <DrawerItem icon={() => (<IconFontisto name="doctor" size={20}/>)} labelStyle={{fontSize: 20}} label="Minha Clínica" onPress={() => {navigation.navigate('MinhaClinica')}}/>
+        <DrawerItem icon={() => (<IconEntypo name="help" size={20}/>)} labelStyle={{fontSize: 20}} label="Dúvidas" onPress={() => {navigation.navigate('Duvidas')}}/>
         <DrawerItem icon={() => (<IconFontisto name="phone" size={20}/>)} style={{borderBottomWidth: 2, borderBottomColor: "#e9ecef"}} labelStyle={{fontSize: 20}} label="Ligue SUS" onPress={() => Linking.openURL(`tel:${136}`)}/>
-        <DrawerItem icon={() => (<IconFontisto name="spinner-cog" size={15}/>)} labelStyle={{fontSize: 15}} label="Configurações" onPress={() => props.navigation.navigate("Settings")}/>
+        <DrawerItem icon={() => (<IconFontisto name="spinner-cog" size={15}/>)} labelStyle={{fontSize: 15}} label="Configurações" onPress={() => {navigation.navigate("Settings")}}/>
         <DrawerItem icon={() => (<IconFontisto name="close" size={15}/>)} labelStyle={{fontSize: 15}} label="Sair" onPress={handleLogout}/>
         <DrawerItem
           label="TUBERC by Fio Cruz"
@@ -44,21 +50,25 @@ function CustomDrawerContent({ props } : { props: any }) {
         <NavigationContainer independent>
             <Drawer.Navigator 
                 drawerType='slide'
-                drawerContent={(props: any) => <CustomDrawerContent {...props} />}>
+                drawerContent={(props: any) => <CustomDrawerContent {...props} navigation= {props.navigation} />}>
                     <Drawer.Screen name="Home" component={MyTabs}/>
                     <Drawer.Screen name="Settings" component={Settings} />
-                    <Drawer.Screen name="Padrinho" component={Godfather}/>
+                    <Drawer.Screen name="Exames" component={Exames}/>
+                    <Drawer.Screen name="MinhaClinica" component={MinhaClinica}/>
+                    <Drawer.Screen name="Duvidas" component={Duvidas}/>
             </Drawer.Navigator>
         </NavigationContainer>
     );
 }
 
 function MyTabs(props: any) {
-     return (
+    const { screenTitle } = useContext(AuthContext);
+    
+    return (
        <NavigationContainer independent={true}>
           <Appbar.Header style={{backgroundColor:"#82B1B6"}}>
             <Appbar.Action  color="#fff" icon={require('../../assets/dots.png')} onPress={() => props.navigation.openDrawer()} />  
-            <Appbar.Content titleStyle={{color: "#fff", alignSelf: 'flex-start'}} title="Tuberc" />
+            <Appbar.Content titleStyle={{color: "#fff", alignSelf: 'flex-start'}} title="TUBERC" />
             <Appbar.Action style={{alignSelf: 'center'}} color='#fff' icon={require('../../assets/setting.png')} onPress={() => props.navigation.navigate('Settings')} />
           </Appbar.Header>
           <Tab.Navigator tabBarPosition="bottom"  tabBarOptions={{activeTintColor: '#fff', pressColor: '#47A8B2', showLabel: false, showIcon: true,

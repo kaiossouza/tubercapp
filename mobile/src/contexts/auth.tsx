@@ -1,7 +1,9 @@
 import React, {createContext, useState} from 'react';
 import { User } from './../models/user';
-import { View, Image } from 'react-native';
 import * as DB from '../services/storage';
+import { View, Image, ActivityIndicator } from 'react-native';
+import { getCurrentEntry, getUser, setDiary } from '../services/storage';
+import DiaryEntry from '../models/Diary';
 
 interface AuthContextData {
     signed: boolean,
@@ -18,6 +20,7 @@ export const AuthProvider: React.FC = ({children}) => {
     const [signed, setSigned] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
+    const [screenTitle, setscreenTitle] = useState("Tuberc");
     
     async function addUser(user: User) {
         var res = await DB.addUser(user);
@@ -42,7 +45,6 @@ export const AuthProvider: React.FC = ({children}) => {
     
     async function handleLogin(email: string, password: string) {
         setLoading(true);
-
         var user = await DB.getUser(email, password);
 
         if(user) {

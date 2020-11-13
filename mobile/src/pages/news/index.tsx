@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { Component, useContext, useState } from 'react';
 import { Text, View, StyleSheet, Image, Linking } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
+import { ActivityIndicator, ProgressBar } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import { Avatar } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconEvilIcons from 'react-native-vector-icons/EvilIcons';
 import { Divider } from 'react-native-paper';
 import tubercAssets from '../../../assets/assets';
 import { getNews } from '../../services/googleapi';
+import { GoogleApiItem } from '../../models/news';
+import AuthContext from '../../contexts/auth';
 
 IconEntypo.loadFont();
 IconEvilIcons.loadFont();
@@ -26,122 +28,139 @@ const medicineImage = assets.medicineImage;
 const symptonsImage = assets.symptonsImage;
 const tuberculose = assets.tuberculose;
 
-export default function News({ navigation }){
-    //const [ items, setItems ] = useState<any | null>(null);
+export default class News extends Component {
+    state = {
+      newsList: [],
+      loading: true
+    };
 
-    // try{
-    //     getNews("tuberculose").then(
-    //         res => {
-    //             console.log(res);
-    //             setItems(res.data.items);
-    //         }
-    //     ).catch(err => console.log(err));
-    // } catch(err) {
-    //     console.log(err);
-    // }
-
-    var newsList = [];
-    var items = [ { 
-            title: "Favelas e periferias do Rio de Janeiro sofrem com a tuberculose",
-            link: "https://portal.fiocruz.br/noticia/favelas-e-periferias-do-rio-de-janeiro-sofrem-com-tuberculose",
-            picture: require('../../../assets/noticia3.jpg')
-        }, { 
-            title: "Fiocruz oferece novo medicamento contra tuberculose",
-            link: "https://portal.fiocruz.br/noticia/fiocruz-oferece-novo-medicamento-contra-tuberculose",
-            picture: require('../../../assets/noticia1.jpg')
-        }, { 
-            title: "Tuberculose: medicamento produzido por Farmanguinhos facilita adesão ao tratamento",
-            link: "https://portal.fiocruz.br/noticia/tuberculose-medicamento-produzido-por-farmanguinhos-facilita-adesao-ao-tratamento",
-            picture: require('../../../assets/noticia2.jpg')
-        }, { 
-            title: "Atividades marcam a semana de luta contra a tuberculose na Fiocruz",
-            link: "https://portal.fiocruz.br/noticia/atividades-marcam-semana-de-luta-contra-tuberculose-na-fiocruz",
-            picture: require('../../../assets/tuberculose.jpg')
-        },
-    ];
-
-    if(!!items) {
-        var results = items ?? [];
-        for (let i = 0; i < results.length; i++) {
-            var newsCardData = results[i];
-            newsList.push(
-                <View style={styles.card}>
-                    <View style={styles.content}>
-                        <View style={styles.imageNews}>
-                            <Avatar size="large" activeOpacity={0.7} avatarStyle={{borderRadius: 10}} source={newsCardData.picture} />
-                        </View>
-                        <View style={styles.cardContent}>
-                            <Text style={styles.titleNews}>{newsCardData.title}</Text>
-                            <Text style={styles.descriptionNews} onPress={() => {Linking.openURL(newsCardData.link)}}>Saiba mais</Text>
-                        </View>
-                        <View style={styles.menu}>
-                            <IconEntypo color="#7d8597" size={20} name="dots-three-vertical"/>
-                        </View>
-                    </View>
-                </View>    
-            );
+    async componentDidMount() {
+      getNews().then(
+        res => {
+            console.log(res);
+            this.setState({
+              newsList: res.data.items,
+              loading: false
+            });
         }
+      ).catch(err => console.log(err));
     }
 
-    return (
-        <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
-                <View style={styles.labelView}>
-                    <Text style={styles.labelText}>Últimas Notícias</Text>
-                </View>
-                { newsList }
-        </ScrollView>
-    );
+    renderItem(data: any){
+      let newsCardData = data.item;
+      console.log(newsCardData);
+
+      let Image_Http_URL = { 
+        uri: newsCardData.pagemap?.cse_image[0].src 
+      };
+
+      if(newsCardData.link != "https://portal.fiocruz.br/" && !newsCardData.link.includes("https://portal.fiocruz.br/busca")){
+        return (        
+            <View style={styles.card}>          
+              <Text style={styles.titleNews}>{newsCardData.title}</Text>          
+              <TouchableOpacity style={styles.descriptionNews} onPress={() => {Linking.openURL(newsCardData.link)}}>
+                <Text>19/09/20</Text>
+                <Text>Saiba mais</Text>            
+              </TouchableOpacity> 
+            </View>);
+      } else {
+        return (<View></View>);
+      }
+    }
+
+    loadMore() {
+      const { newsList, loading } = this.state;
+      var oldList = newsList;
+      
+      if(!loading) {
+        this.setState({
+          newsList: [],
+          loading: true
+        });
+      }
+
+      getNews(newsList.length + 1).then(
+        res => {
+            console.log(res);
+            
+            for(let i = 0; i < res.data.items.length; i++) {
+              var item = res.data.items[0];
+              oldList.push(item as never);
+            }
+
+            this.setState({
+              newsList: oldList,
+              loading: false
+            });
+        }
+      ).catch(err => {
+          console.log(err);
+          this.setState({
+            newsList: oldList,
+            loading: false
+          });
+        }
+      );
+    }
+
+    render() {
+      const { newsList, loading } = this.state;   
+
+      if(!loading) {
+        return (
+          <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
+            <View style={styles.labelView}>
+              <Text style={styles.labelText}>ÚLTIMAS NOTÍCIAS</Text>
+            </View>
+            <FlatList data={newsList} renderItem={this.renderItem} keyExtractor={(item) => item['title']}></FlatList>
+            <TouchableOpacity style={styles.labelPlus} onPress={() => this.loadMore()}>
+              <Text style={styles.labelPlusText}>CARREGAR MAIS</Text>
+            </TouchableOpacity>
+          </ScrollView>);
+      } else {
+        return <ActivityIndicator />
+      }        
+    };
 };
+
+News.contextType = AuthContext;
 
 const styles = StyleSheet.create({
     labelText: {
         color:'#FFF',
-        fontSize:24
+        fontSize:14
+    },
+    labelPlusText: {
+      color:'#666666',
+      fontSize:14
+    },
+    labelPlus: {
+        padding: 10,
+        margin: 10,
+        width: "95%",
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        flexDirection: 'column',
+        flex: 1,
+        alignItems: 'center',
     },
     labelView: {
         flexDirection: 'column',
         flex: 1,
-        paddingLeft:40,
+        alignItems: 'center',
         paddingBottom:10
     },
-    avatar:{
-        alignSelf: 'center',
-        marginTop: 10
+    cardDate:{
+      color: '#666666',
+      fontSize: 14,
+      justifyContent: 'flex-start'
     },
-    progressBar:{
-      flex: 1,
-      marginTop: 15,
-      marginHorizontal: 20,
-      width: '70%',
-      height: 15,
-      alignSelf:'center',
-      borderRadius: 5,
-    },
-    appName:{
-      alignSelf:'center',
-      marginTop: 10,
-      paddingTop: 15,
-      fontSize: 25,
-      color: '#fff'
-    },
-    downArrow:{
-      tintColor: '#fff',
-      width: 15,
-      height: 15,
-      alignSelf: 'center',
-      marginTop: 10,
-      marginBottom: 5
-    },
-    cards:{
-      marginVertical: 20
-    },
-
     card:{
+      padding: 10,
       margin: 10,
-      height: 110,
+      width: "95%",
       backgroundColor: '#fff',
-      borderRadius: 20,
-      width: 350,
+      borderRadius: 5,
       alignSelf: 'center',
     },
     content:{
@@ -199,7 +218,8 @@ const styles = StyleSheet.create({
     },
     titleNews:{
       color: '#666666',
-      fontSize: 14,
+      fontSize: 18,
+      padding: 5
     },
     description: {
         color: '#7d8597',
@@ -211,8 +231,12 @@ const styles = StyleSheet.create({
       fontSize: 12
     },
     descriptionNews: {
+      flex: 1,
+      flexDirection: 'row',
       color: '#7d8597',
-      left: 150,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 2
     },
     divider:{
         height: 3,
@@ -255,5 +279,22 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
+    },
+    listItemContainer: {
+        borderStyle: 'solid',
+        borderColor: '#fff',
+        borderBottomWidth: 2,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 20
+    },
+    pokeItemHeader: {  
+        color: '#fff',
+        fontSize: 24,
+    },
+    pokeImage: {
+        backgroundColor: 'transparent',
+        height: 50,
+        width: 50
     }
 });

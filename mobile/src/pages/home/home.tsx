@@ -27,24 +27,26 @@ const medicineImage = assets.medicineImage;
 const symptonsImage = assets.symptonsImage;
 const tuberculose = assets.tuberculose;
 
-export default function Home({navigation} : { navigation: any }){
+export default function Home({navigation} : { navigation: any }){    
     const { user } = useContext(AuthContext);
     const firstNameTrim = user ? user.name.substring(0, user.name.indexOf(" ")) : null;
     const firstUserName = user ? (firstNameTrim ? firstNameTrim : user.name) : "";
     const now = moment(new Date());
     const duration = moment.duration(now.diff(user?.treatmentStart));
     const treatmentDuration: number = user?.treatmentDuration ? user?.treatmentDuration : 0;
-    const percentDuration = parseInt(duration.asDays().toString()) / treatmentDuration;
-
+    const percentDuration = parseInt(duration.days().toString()) / treatmentDuration;
+    const percentIntDuration = parseInt((percentDuration * 100).toString()) ;
+    const imageProfile =  <Avatar size="large" rounded  containerStyle={styles.avatar} source={{ uri: user?.picture}}/>;
+    const imageProfileNull = <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('./../../../assets/logo.png')}/>;
     return (
         <ScrollView style={{backgroundColor:'#82B1B6', flex: 1}}>
             <View style={styles.infoUser}>
-              <Avatar size="large" rounded  containerStyle={styles.avatar} source={require('../../../assets/yuri.jpg')}/>
-              <Text style={styles.appName}>{firstUserName}</Text>
+                {user?.picture ? imageProfile : imageProfileNull}
+                <Text style={styles.appName}>{firstUserName}</Text>
             </View>
-            <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/>
+            {/* <Image style={styles.downArrow} source={require('../../../assets/setBottom.png')}/> */}
             <View>
-              <Progress done={percentDuration * 100}/>
+              <Progress done={percentIntDuration}/>
             </View>
 
             <View style={styles.cards}>

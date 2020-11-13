@@ -24,6 +24,7 @@ export async function getCurrentEntry() {
     return getEntry(currentKey);
 }
 
+
 export async function listUsers(): Promise<User[]> {
     let user = await AsyncStorage.getItem(`users`);
     return JSON.parse(user || "[]") as User[];
