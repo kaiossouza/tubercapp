@@ -98,9 +98,9 @@ export default class News extends Component {
               <Text style={styles.labelText}>ÚLTIMAS NOTÍCIAS</Text>
             </View>
             <FlatList data={newsList} renderItem={this.renderItem} keyExtractor={(item) => item['title']}></FlatList>
-            <TouchableOpacity style={styles.labelPlus} onPress={() => this.loadMore()}>
+            {/* <TouchableOpacity style={styles.labelPlus} onPress={() => this.loadMore()}>
               <Text style={styles.labelPlusText}>CARREGAR MAIS</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>);
       } else {
         return <ActivityIndicator />

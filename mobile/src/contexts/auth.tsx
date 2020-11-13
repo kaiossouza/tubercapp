@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 import { User } from './../models/user';
 import * as DB from '../services/storage';
 import { View, Image, ActivityIndicator } from 'react-native';
@@ -8,6 +8,8 @@ import DiaryEntry from '../models/Diary';
 interface AuthContextData {
     signed: boolean,
     user: User | null,
+    date: Date,
+    setDate: Dispatch<SetStateAction<Date>>,
     handleLogin(email: string, password: string): Promise<void>,
     handleLogout(): Promise<void>,
     addUser(user: User): Promise<void>,
@@ -20,6 +22,7 @@ export const AuthProvider: React.FC = ({children}) => {
     const [signed, setSigned] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
+    const [date, setDate] = useState(new Date());
     
     async function addUser(user: User) {
         var res = await DB.addUser(user);
@@ -74,6 +77,8 @@ export const AuthProvider: React.FC = ({children}) => {
             <AuthContext.Provider value={{
                 signed: !!user,
                 user: user,
+                date,
+                setDate,
                 handleLogin,
                 handleLogout,
                 addUser,

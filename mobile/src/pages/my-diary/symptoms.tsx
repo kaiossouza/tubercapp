@@ -61,7 +61,7 @@ const Symptoms = () => {
         } else { 
           setSymptoms("[]");
           setDate(selectedDate); 
-        }           
+        }    
     };
     
     function updateSymptoms(symptom: string) {

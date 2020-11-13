@@ -2,10 +2,11 @@ import React, {useState, useContext} from 'react';
 import {View, Image, TouchableOpacity } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import AuthContext from '../../contexts/auth';
+import sendPassword from '../../services/mail';
 import styles from './styles';
 
 export default function Login({ navigation } : { navigation: any }) {
-  const { signed, user, handleLogin } = useContext(AuthContext);  
+  const { handleLogin } = useContext(AuthContext);  
   const [ credentials, setCredentials ] = useState({
     email: "",
     senha: ""
@@ -71,7 +72,7 @@ export default function Login({ navigation } : { navigation: any }) {
       <Button mode="contained" onPress={login} style={styles.button} labelStyle={styles.textButton}>Entrar</Button>
       <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }}>
           <Text style={styles.touchableText}>Não tem uma conta?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>   
     </View>
   );
 }

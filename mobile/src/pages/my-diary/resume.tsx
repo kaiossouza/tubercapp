@@ -10,6 +10,7 @@ import { AppLoading } from 'expo';
 import { Agenda } from 'react-native-calendars';
 import AuthContext from '../../contexts/auth';
 import { DiarySummary } from '../../models/Diary';
+import ForegroundBackground from '../../components/foreground';
 
 IconFeather.loadFont();
 const {height} = Dimensions.get("window");
@@ -19,7 +20,7 @@ const timeToString = (time: any) => {
     return date.toISOString().split('T')[0];
 };  
 
-const DiaryResume = () => {
+export default function DiaryResume({ navigation }: { navigation: any }) {
     const { user } = useContext(AuthContext);
 
     let [fontsLoaded] = useFonts({
@@ -120,6 +121,8 @@ const DiaryResume = () => {
     } else {
         return (
             <View style={styles.agenda}>
+                {/* <ForegroundBackground navigation={navigation.navigation}
+                      fgCallback = {()=>{alert("resume")}}/> */}
                 <Agenda
                     items={items}
                     loadItemsForMonth={loadItems}
@@ -132,7 +135,7 @@ const DiaryResume = () => {
     }
 }
 
-export default DiaryResume;
+//export default DiaryResume;
 
 const styles = StyleSheet.create({
     agenda: {

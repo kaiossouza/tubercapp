@@ -77,7 +77,7 @@ export async function getUser(email: string, password: string): Promise<User | n
     var listOfUsers = await listUsers();
 
     var dbUser = listOfUsers.filter((u) => {
-        return u.email == email && u.password == password;
+        return u.email.toLowerCase() == email.toLowerCase() && u.password == password;
     });
 
     if(dbUser) {
